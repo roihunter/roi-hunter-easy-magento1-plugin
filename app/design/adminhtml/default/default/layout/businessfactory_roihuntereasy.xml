@@ -1,0 +1,11 @@
+<layout>
+    <!--Any page-->
+    <adminhtml_roihuntereasy_index>
+        <reference name="content">
+            <block type="businessfactory_roihuntereasy/adminhtml_admin"
+                   name="admin_block"
+                   template="businessfactory_roihuntereasy/admin.phtml">
+            </block>
+        </reference>
+    </adminhtml_roihuntereasy_index>
+</layout>

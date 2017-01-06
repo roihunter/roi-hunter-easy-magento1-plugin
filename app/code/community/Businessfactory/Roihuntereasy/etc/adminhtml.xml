@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <businessfactory translate="title" module="businessfactory_roihuntereasy">
+            <title>ROI Hunter Easy</title>
+            <sort_order>1</sort_order>
+            <action>adminhtml/roihuntereasy/index</action>
+        </businessfactory>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <roihuntereasy_options>
+                                        <title>ROI Hunter Easy Section</title>
+                                    </roihuntereasy_options>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                    <businessfactory translate="title" module="businessfactory_roihuntereasy">
+                        <title>Top Level ROI Hunter Easy Menu Item</title>
+                        <sort_order>1</sort_order>
+                    </businessfactory>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

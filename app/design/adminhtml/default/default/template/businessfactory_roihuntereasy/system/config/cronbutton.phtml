@@ -1,0 +1,25 @@
+<script type="text/javascript">
+    //<![CDATA[
+    function check() {
+        new Ajax.Request('<?php echo $this->getAjaxUrl() ?>', {
+            method:     'get',
+            onCreate: function () {
+
+            },
+            onSuccess: function (response) {
+                console.log(response.responseText);
+                if (response.responseJSON) {
+                    alert(response.responseJSON);
+                } else {
+                    alert(response.responseText);
+                }
+            },
+            onFailure: function () {
+                resultBox.text('Request failed.');
+            }
+        });
+    }
+    //]]>
+</script>
+ 
+<?php echo $this->getButtonHtml() ?>
