@@ -58,6 +58,6 @@ class Businessfactory_Roihuntereasy_Block_Adminhtml_System_Config_Resetbutton ex
      */
     public function getAjaxUrl()
     {
-        return Mage::helper('adminhtml')->getUrl('roihuntereasy/system/reset');
+        return Mage::helper('adminhtml')->getUrl('roihuntereasy/reset/data');
     }
 }
