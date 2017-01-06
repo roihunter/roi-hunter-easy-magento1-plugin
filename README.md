@@ -42,9 +42,9 @@ You can install the extension through Magento Connect Manager which is located i
 
 There are 2 ways how to install the extension - either through Magento Connect store or by manually uploading the package. 
 
-[![magento_connect.png](https://s24.postimg.org/xklpxpysl/mc01.jpg)
+![magento_connect.png](https://s24.postimg.org/xklpxpysl/mc01.jpg)
 
-[![magento_connect2.png](https://static10.cminds.com/wp-content/uploads/How-to-install-a-magento-extension-Magento-connect.jpg)
+![magento_connect2.png](https://static10.cminds.com/wp-content/uploads/How-to-install-a-magento-extension-Magento-connect.jpg)
 
 ## Magento Connect Key
 
@@ -57,14 +57,14 @@ Magento 1.9 is about to be released on Magento Connect.
 
 The Cache can be cleared after you log into the admin panel and go to the SYSTEM -> Cache Management. You can refer to the below screenshot.
 
-[![magento_flush_cache.png](https://static08.cminds.com/wp-content/uploads/How-to-install-a-magento-extension-cache-management.jpg)
+![magento_flush_cache.png](https://static08.cminds.com/wp-content/uploads/How-to-install-a-magento-extension-cache-management.jpg)
 
 
 # FAQ
 **How to reset plugin? How to restore stucked feed generation?**
 If you need to return the plugin to its original settings (for example when you used wrong Google account during login) you can delete the data as follows: Go to the Admin section - System - Configuration - ROI HUNTER - ROI HUNTER EASY  - Reset Data. On the same screen you can also restore stucked feed generation.
 
-[![magento_reset.png](https://s27.postimg.org/omt02r3hv/Sni_mek_obrazovky_2017_01_06_v_18_48_26.png)
+![magento_reset.png](https://s27.postimg.org/omt02r3hv/Sni_mek_obrazovky_2017_01_06_v_18_48_26.png)
 
 # Support
 If you would have any difficulty with the usage of this extension, or have any issues you would like to raise with us please feel free to submit a support ticket by emailing easy@roihunter.com.
