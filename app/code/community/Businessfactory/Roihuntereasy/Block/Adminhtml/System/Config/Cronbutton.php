@@ -39,13 +39,13 @@ class Businessfactory_Roihuntereasy_Block_Adminhtml_System_Config_Cronbutton ext
      *
      * @return string
      */
-    public function getButtonHtml()
+    public function getCronButtonHtml()
     {
         $button = $this->getLayout()->createBlock('adminhtml/widget_button')
             ->setData(array(
                 'id'        => 'roihuntereasy_reset_button',
                 'label'     => $this->helper('adminhtml')->__('Reset Cron'),
-                'onclick'   => 'javascript:check(); return false;'
+                'onclick'   => 'javascript:resetCron(); return false;'
             ));
 
         return $button->toHtml();
@@ -56,7 +56,7 @@ class Businessfactory_Roihuntereasy_Block_Adminhtml_System_Config_Cronbutton ext
      *
      * @return string
      */
-    public function getAjaxUrl()
+    public function getCronAjaxUrl()
     {
         return Mage::helper('adminhtml')->getUrl('roihuntereasy/reset/cron');
     }

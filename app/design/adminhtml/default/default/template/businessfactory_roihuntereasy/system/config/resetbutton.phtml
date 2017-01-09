@@ -1,25 +1,28 @@
 <script type="text/javascript">
     //<![CDATA[
-    function check() {
-        new Ajax.Request('<?php echo $this->getAjaxUrl() ?>', {
-            method:     'get',
-            onCreate: function () {
+    function resetData() {
+        var r = confirm("Are you sure you want to reset data?");
+        if (r == true) {
+            new Ajax.Request('<?php echo $this->getResetAjaxUrl() ?>', {
+                method:     'get',
+                onCreate: function () {
 
-            },
-            onSuccess: function (response) {
-                console.log(response.responseText);
-                if (response.responseJSON) {
-                    alert(response.responseJSON);
-                } else {
-                    alert(response.responseText);
+                },
+                onSuccess: function (response) {
+                    console.log(response.responseText);
+                    if (response.responseJSON) {
+                        alert(response.responseJSON);
+                    } else {
+                        alert(response.responseText);
+                    }
+                },
+                onFailure: function () {
+                    resultBox.text('Request failed.');
                 }
-            },
-            onFailure: function () {
-                resultBox.text('Request failed.');
-            }
-        });
+            });
+        }
     }
     //]]>
 </script>
  
-<?php echo $this->getButtonHtml() ?>
+<?php echo $this->getResetButtonHtml() ?>

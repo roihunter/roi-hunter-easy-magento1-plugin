@@ -1,7 +1,7 @@
 <script type="text/javascript">
     //<![CDATA[
-    function check() {
-        new Ajax.Request('<?php echo $this->getAjaxUrl() ?>', {
+    function resetCron() {
+        new Ajax.Request('<?php echo $this->getCronAjaxUrl() ?>', {
             method:     'get',
             onCreate: function () {
 
@@ -22,4 +22,4 @@
     //]]>
 </script>
  
-<?php echo $this->getButtonHtml() ?>
+<?php echo $this->getCronButtonHtml() ?>

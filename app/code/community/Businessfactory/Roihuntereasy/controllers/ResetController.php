@@ -39,7 +39,7 @@ class Businessfactory_Roihuntereasy_ResetController extends Mage_Core_Controller
                 try{
                     $goostav_response = $client->request();
                     if ($goostav_response->isSuccessful()) {
-                        return $response->setBody(json_encode("Reset completed"));
+                        return $response->setBody(json_encode("Reset data completed"));
                     }
                     else {
                         return $response->setBody($goostav_response->getStatus());
@@ -71,7 +71,7 @@ class Businessfactory_Roihuntereasy_ResetController extends Mage_Core_Controller
 
             if ($io->fileExists($filename)) {
                 $io->rm($filename);
-                return $response->setBody(json_encode("Reset completed."));
+                return $response->setBody(json_encode("Reset cron completed."));
             }
             else {
                 return $response->setBody(json_encode("Reset already completed."));

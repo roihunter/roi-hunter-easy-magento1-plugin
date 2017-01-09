@@ -39,13 +39,13 @@ class Businessfactory_Roihuntereasy_Block_Adminhtml_System_Config_Resetbutton ex
      *
      * @return string
      */
-    public function getButtonHtml()
+    public function getResetButtonHtml()
     {
         $button = $this->getLayout()->createBlock('adminhtml/widget_button')
             ->setData(array(
                 'id'        => 'roihuntereasy_reset_button',
                 'label'     => $this->helper('adminhtml')->__('Reset Data'),
-                'onclick'   => 'javascript:check(); return false;'
+                'onclick'   => 'javascript:resetData(); return false;'
             ));
 
         return $button->toHtml();
@@ -56,7 +56,7 @@ class Businessfactory_Roihuntereasy_Block_Adminhtml_System_Config_Resetbutton ex
      *
      * @return string
      */
-    public function getAjaxUrl()
+    public function getResetAjaxUrl()
     {
         return Mage::helper('adminhtml')->getUrl('roihuntereasy/reset/data');
     }
