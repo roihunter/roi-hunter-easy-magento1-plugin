@@ -52,7 +52,7 @@ Magento 1.9 is about to be released on Magento Connect.
 
 ## Manually
 
-* Download the package located in Releases tab.
+* Download the package located in [Releases tab](https://github.com/business-factory/roi-hunter-easy-magento1-plugin/releases).
 * Upload the package
 
 The Cache can be cleared after you log into the admin panel and go to the SYSTEM -> Cache Management. You can refer to the below screenshot.
