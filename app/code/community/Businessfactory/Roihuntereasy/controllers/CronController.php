@@ -25,7 +25,34 @@ class Businessfactory_Roihuntereasy_CronController extends Mage_Core_Controller_
         $response->setHeader('Access-Control-Allow-Headers', 'X-Authorization', true);
 
         if ($request->getMethod() === 'GET') {
-            $this->processGET();
+            $request = $this->getRequest();
+            $response = $this->getResponse();
+
+            try {
+                $authorizationHeader = $request->getHeader('X-Authorization');
+
+                $mainItemCollection = Mage::getModel('businessfactory_roihuntereasy/main')->getCollection();
+                $clientToken = $mainItemCollection->getLastItem()->getClientToken();
+                if ($clientToken == NULL || $clientToken !== $authorizationHeader) {
+                    $response->setBody(json_encode("Not authorized"));
+                    $response->setHttpResponseCode(403);
+                    return;
+                }
+
+                Mage::log("Cron generating started manually.", null, 'cron.log');
+                $resultCode = $this->cron->createFeed();
+                if($resultCode == true){
+                    $response->setBody(json_encode('Feed generated.'));
+                } else {
+                    $response->setBody(json_encode('Feed not generated.'));
+                }
+            } catch (Exception $exception) {
+                Mage::log(__METHOD__ . " exception.", null, 'errors.log');
+                Mage::log($exception, null, 'errors.log');
+                Mage::log($request, null, 'errors.log');
+                $response->setHttpResponseCode(500);
+                $response->setBody(json_encode('Feed generation failed.'));
+            }
         } else if ($request->getMethod() === 'OPTIONS') {
 
         } else {
@@ -34,39 +61,73 @@ class Businessfactory_Roihuntereasy_CronController extends Mage_Core_Controller_
     }
 
     /**
-     * GET
-     * http://store.com/roihuntereasy/cron/index
+     * http://store.com/roihuntereasy/cron/init
      */
-    function processGET()
+    public function initAction()
     {
+        Mage::log(__METHOD__ . "- FeedReset called.");
+
         $request = $this->getRequest();
         $response = $this->getResponse();
 
-        try {
-            $authorizationHeader = $request->getHeader('X-Authorization');
+        Mage::log($request);
 
-            $mainItemCollection = Mage::getModel('businessfactory_roihuntereasy/main')->getCollection();
-            $clientToken = $mainItemCollection->getLastItem()->getClientToken();
-            if ($clientToken == NULL || $clientToken !== $authorizationHeader) {
-                $response->setBody(json_encode("Not authorized"));
-                $response->setHttpResponseCode(403);
-                return;
-            }
+        $response->setHeader('Content-type', 'application/json');
+        $response->setHeader('Access-Control-Allow-Origin', '*', true);
+        $response->setHeader('Access-Control-Allow-Methods', 'OPTIONS,GET', true);
+        $response->setHeader('Access-Control-Max-Age', '60', true);
+        $response->setHeader('Access-Control-Allow-Headers', 'X-Authorization', true);
 
-            Mage::log("Cron generating started manually.", null, 'cron.log');
-            $resultCode = $this->cron->createFeed();
-            if($resultCode == true){
-                $response->setBody(json_encode('Feed generated.'));
-            } else {
-                $response->setBody(json_encode('Feed not generated.'));
+        if ($request->getMethod() === 'GET') {
+            try {
+                // If table not empty, require authorization.
+                $mainItemCollection = Mage::getModel('businessfactory_roihuntereasy/main')->getCollection();
+                if ($mainItemCollection->count() > 0) {
+                    $authorizationHeader = $this->getRequest()->getHeader('X-Authorization');
+                    $dataEntity = $mainItemCollection->getLastItem();
+                    // If data exist check for client token.
+                    if ($dataEntity->getClientToken() != null && $dataEntity->getClientToken() !== $authorizationHeader) {
+                        $response->setBody(json_encode("Not authorized"));
+                        $response->setHttpResponseCode(403);
+                        return;
+                    }
+                }
+
+                $filename = "businessFactoryRoiHunterEasyFeedSign";
+                $io = new Varien_Io_File();
+                $io->open(array('path' => Mage::getBaseDir()));
+
+                if (!$io->fileExists($filename)) {
+                    $response->setBody(json_encode("Reset already completed."));
+                }
+                else {
+                    // try to delete feed generation sign.
+                    $io->rm($filename);
+                    $response->setBody(json_encode("Reset completed."));
+                }
+
+                $io->close();
+
+                Mage::log("Cron generating started manually.", null, 'cron.log');
+                $resultCode = $this->cron->createFeed();
+                if($resultCode == true){
+                    $response->setBody(json_encode('Feed generated.'));
+                } else {
+                    $response->setBody(json_encode('Feed not generated.'));
+                }
+            } catch (Exception $exception) {
+                Mage::log(__METHOD__ . " exception.", null, 'errors.log');
+                Mage::log($exception, null, 'errors.log');
+                Mage::log($request, null, 'errors.log');
+                $response->setHttpResponseCode(500);
+                $response->setBody(json_encode('Feed generation failed.'));
             }
-        } catch (Exception $exception) {
-            Mage::log(__METHOD__ . " exception.", null, 'errors.log');
-            Mage::log($exception, null, 'errors.log');
-            Mage::log($request, null, 'errors.log');
-            $response->setHttpResponseCode(500);
-            $response->setBody(json_encode('Feed generation failed.'));
+        } else if ($request->getMethod() === 'OPTIONS') {
+
+        } else {
+            $response->setHttpResponseCode(400);
         }
     }
+
 }
 

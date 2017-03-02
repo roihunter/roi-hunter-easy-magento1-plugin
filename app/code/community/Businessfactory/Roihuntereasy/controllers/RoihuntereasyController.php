@@ -8,4 +8,9 @@ class Businessfactory_Roihuntereasy_RoihuntereasyController extends Mage_Adminht
         $this->loadLayout()->_setActiveMenu('businessfactory');
         $this->renderLayout();
     }
+
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('businessfactory/businessfactory_roihuntereasy');
+    }
 }

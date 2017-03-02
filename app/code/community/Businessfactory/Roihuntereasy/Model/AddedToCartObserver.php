@@ -32,4 +32,3 @@ class Businessfactory_Roihuntereasy_Model_AddedToCartObserver extends Mage_Core_
         }
     }
 }
-?>

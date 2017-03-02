@@ -8,6 +8,11 @@ class Businessfactory_Roihuntereasy_Block_Adminhtml_Admin extends Mage_Adminhtml
         $this->store = Mage::app()->getStore();
     }
 
+    public function getDevelopmentMode()
+    {
+        return Mage::getIsDeveloperMode() ? "developer" : "production";
+    }
+
     public function getStoreBaseUrl()
     {
         return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB, true);

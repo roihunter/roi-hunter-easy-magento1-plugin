@@ -36,7 +36,9 @@
     var status = "<?php echo($this->getMainItemEntry() ? $this->getMainItemEntry()->getStatus() : null); ?>";
     var errors = "<?php echo($this->getMainItemEntry() ? $this->getMainItemEntry()->getErrors() : null); ?>";
     var creationState = "<?php echo($this->getMainItemEntry() ? $this->getMainItemEntry()->getCreationState() : null); ?>";
+    var magentoMode = "<?php echo $this->getDevelopmentMode(); ?>";
 
+    console.log("mode" + magentoMode)
 
     var iFrame = document.getElementById('RoihuntereasyIFrame');
     var loadingMessageEl = document.getElementById('loadingMessage');
@@ -53,6 +55,7 @@
                 "storeCurrency": storeCurrency,
                 "storeLanguage": storeLanguage,
                 "storeCountry": storeCountry,
+                "magentoMode": magentoMode,
 
                 // Database part
                 "customerId": customerId,

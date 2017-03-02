@@ -4,10 +4,185 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
 {
     public function indexAction()
     {
-        echo "<h1>Hello Store Details.</h1>";
-
         $this->loadLayout();
         $this->renderLayout();
+    }
+
+    /**
+     * http://store.com/roihuntereasy/storedetails/check
+     */
+    public function checkAction()
+    {
+        Mage::log(__METHOD__ . "- Check called.");
+
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+
+        $response->setHeader('Content-type', 'application/json');
+        $response->setHeader('Access-Control-Allow-Origin', '*', true);
+        $response->setHeader('Access-Control-Allow-Methods', 'OPTIONS,GET,POST', true);
+        $response->setHeader('Access-Control-Max-Age', '60', true);
+        $response->setHeader('Access-Control-Allow-Headers', 'X-Authorization', true);
+
+        $response->setBody(json_encode("rh-easy-active."));
+    }
+
+    /**
+     * http://store.com/roihuntereasy/storedetails/check
+     */
+    public function debugAction()
+    {
+        Mage::log(__METHOD__ . "- Debug called.");
+
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+
+        $response->setHeader('Content-type', 'application/json');
+        $response->setHeader('Access-Control-Allow-Origin', '*', true);
+        $response->setHeader('Access-Control-Allow-Methods', 'OPTIONS,GET,POST', true);
+        $response->setHeader('Access-Control-Max-Age', '60', true);
+        $response->setHeader('Access-Control-Allow-Headers', 'X-Authorization', true);
+
+        if ($request->getMethod() === 'GET') {
+            $this->processDebugGET();
+        }
+    }
+
+    /**
+     * GET
+     * http://store.com/roihuntereasy/storedetails/debug
+     *
+     */
+    function processDebugGET()
+    {
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+
+        try {
+            // If table not empty, require authorization.
+            $mainItemCollection = Mage::getModel('businessfactory_roihuntereasy/main')->getCollection();
+            if ($mainItemCollection->count() > 0) {
+                $authorizationHeader = $this->getRequest()->getHeader('X-Authorization');
+                $dataEntity = $mainItemCollection->getLastItem();
+                // If data exist check for client token.
+                if ($dataEntity->getClientToken() != null && $dataEntity->getClientToken() !== $authorizationHeader) {
+                    $response->setBody(json_encode("Not authorized"));
+                    $response->setHttpResponseCode(403);
+                    return;
+                }
+            }
+
+            $resultData = $_SERVER;
+            $resultData['Magento_Mode'] = Mage::getIsDeveloperMode() ? "developer" : "production";;
+            $resultData['Php_Version'] = phpversion();
+
+            $response->setBody(json_encode($resultData));
+        } catch (Exception $exception) {
+            Mage::log(__METHOD__ . " exception.", null, 'errors.log');
+            Mage::log($exception, null, 'errors.log');
+            Mage::log($request, null, 'errors.log');
+            $response->setHttpResponseCode(500);
+        }
+    }
+
+    /**
+     * http://store.com/roihuntereasy/storedetails/logs
+     */
+    public function logsAction()
+    {
+        Mage::log(__METHOD__ . "- Debug called.", 'debug.log');
+
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+
+        $response->setHeader('Content-type', 'application/json');
+        $response->setHeader('Access-Control-Allow-Origin', '*', true);
+        $response->setHeader('Access-Control-Allow-Methods', 'OPTIONS,GET,POST', true);
+        $response->setHeader('Access-Control-Max-Age', '60', true);
+        $response->setHeader('Access-Control-Allow-Headers', 'X-Authorization', true);
+
+        if ($request->getMethod() === 'GET') {
+            $this->processLogsGET();
+        }
+    }
+
+    /**
+     * GET
+     * http://store.com/roihuntereasy/storedetails/logs
+     *
+     */
+    function processLogsGET()
+    {
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+
+        try {
+            // If table not empty, require authorization.
+            $mainItemCollection = Mage::getModel('businessfactory_roihuntereasy/main')->getCollection();
+            if ($mainItemCollection->count() > 0) {
+                $authorizationHeader = $this->getRequest()->getHeader('X-Authorization');
+                $dataEntity = $mainItemCollection->getLastItem();
+                // If data exist check for client token.
+                if ($dataEntity->getClientToken() != null && $dataEntity->getClientToken() !== $authorizationHeader) {
+                    $response->setBody(json_encode("Not authorized"));
+                    $response->setHttpResponseCode(403);
+                    return;
+                }
+            }
+
+            $zipFilename = "all_logs.zip";
+            $rootPath = Mage::getBaseDir('log');
+            $zipAbsolutePath = $rootPath . '/' . $zipFilename;
+
+
+            $zip = new ZipArchive();
+            if ($zip->open($zipAbsolutePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+                Mage::log("cannot open zip", null);
+                $response->setBody("cannot open zip");
+                return;
+            }
+            else {
+                Mage::log("zip opened", null);
+            }
+
+            // Create recursive directory iterator
+            /** @var SplFileInfo[] $files */
+            $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($rootPath),
+                RecursiveIteratorIterator::LEAVES_ONLY);
+
+            foreach ($files as $name => $file) {
+                // Skip directories (they would be added automatically)
+                if (!$file->isDir() && strpos($file->getFilename(), 'all_logs.zip') === false) {
+                    // Get real and relative path for current file
+                    $filePath = $file->getRealPath();
+                    $relativePath = substr($filePath, strlen($rootPath));
+                    // Add current file to archive
+                    if ($zip->addFile($filePath, $relativePath) !== true) {
+                        Mage::log("cannot add file to zip", null, 'cro.log');
+                        $response->setBody("cannot add file to zip");
+                        return;
+                    }
+                    else {
+                        Mage::log("added file to zip", null, 'cro.log');
+                    }
+                }
+            }
+            // Zip archive will be created only after closing object
+            $zip->close();
+
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="' . basename($zipAbsolutePath) .'"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            readfile($zipAbsolutePath);
+        } catch (Exception $exception) {
+            Mage::log(__METHOD__ . " exception.", null, 'errors.log');
+            Mage::log($exception, null, 'errors.log');
+            Mage::log($request, null, 'errors.log');
+            $response->setHttpResponseCode(500);
+        }
     }
 
     /**
@@ -295,6 +470,7 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
                 $io->streamWrite($content);
                 $io->streamClose();
 
+                $io->close();
                 // Nginx - check if it is necessary to create file in public folder
 
             } else {

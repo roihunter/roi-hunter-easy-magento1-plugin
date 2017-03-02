@@ -18,9 +18,9 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
     {
         Mage::log(__METHOD__ . " cron", null, 'cron.log');
         $filename = "businessFactoryRoiHunterEasyFeedSign";
+        $io = new Varien_Io_File();
 
         try {
-            $io = new Varien_Io_File();
             $io->setAllowCreateFolders(true);
             $io->open(array('path' => Mage::getBaseDir()));
 
@@ -39,6 +39,8 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
             // Delete file
             $io->rm($filename);
 
+            $io->close();
+
             return true;
         } catch (Exception $exception) {
             Mage::log(__METHOD__ . " exception.", null, 'errors.log');
@@ -47,6 +49,8 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
             // Try delete file also when exception occurred.
             try {
                 $io->rm($filename);
+
+                $io->close();
             } catch (Exception $exception) {
                 Mage::log(__METHOD__ . " exception.", null, 'errors.log');
                 Mage::log($exception, null, 'errors.log');
@@ -160,6 +164,9 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         } catch (Exception $e) {
             Mage::throwException($e);
         }
+
+        $io->close();
+
         return true;
     }
 

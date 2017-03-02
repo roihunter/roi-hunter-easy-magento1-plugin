@@ -28,13 +28,13 @@ class Businessfactory_Roihuntereasy_ResetController extends Mage_Core_Controller
                 $client->setMethod(Varien_Http_Client::GET);
                 $client->setConfig(array(
                     'adapter' => 'Zend_Http_Client_Adapter_Curl',
-                    'curloptions' => [CURLOPT_FOLLOWLOCATION => true],
+                    'curloptions' => array(CURLOPT_FOLLOWLOCATION => true),
                     'maxredirects' => 5,
                     'timeout' => 60
                 ));
-                $client->setHeaders([
+                $client->setHeaders(array(
                     'X-Authorization' => $accessToken
-                ]);
+                ));
 
                 try{
                     $goostav_response = $client->request();
@@ -76,7 +76,7 @@ class Businessfactory_Roihuntereasy_ResetController extends Mage_Core_Controller
             else {
                 return $response->setBody(json_encode("Reset already completed."));
             }
-
+            $io->close();
         } catch (Exception $e) {
             Mage::log($e, null, 'errors.log');
             return $response->setBody(json_encode("Reset cron failed. Please check logs and contact support at easy@roihunter.com."));

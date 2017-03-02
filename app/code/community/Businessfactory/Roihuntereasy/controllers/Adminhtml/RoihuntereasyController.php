@@ -11,5 +11,10 @@ class Businessfactory_Roihuntereasy_Adminhtml_RoihuntereasyController extends Ma
         $result = 1;
         Mage::app()->getResponse()->setBody($result);
     }
+
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('businessfactory/businessfactory_roihuntereasy');
+    }
 }
 

@@ -49,4 +49,3 @@ class Businessfactory_Roihuntereasy_Model_CheckoutObserver extends Mage_Core_Mod
         }
     }
 }
-?>

@@ -17,13 +17,12 @@ class Businessfactory_Roihuntereasy_FeedController extends Mage_Core_Controller_
                 header('Cache-Control: must-revalidate');
                 header('Pragma: public');
                 readfile($file);
-                exit;
             }
             else {
                 Mage::log("Product feed file does not exist.", null, 'feed.log');
                 $this->getResponse()->setHttpResponseCode(404);
                 $this->getResponse()->setBody(json_encode(
-                    ['error_message' => 'Feed not found. Please look to log file for more information.']
+                    array('error_message' => 'Feed not found. Please look to log file for more information.')
                 ));
             }
         } catch (Exception $exception) {
@@ -33,7 +32,7 @@ class Businessfactory_Roihuntereasy_FeedController extends Mage_Core_Controller_
 
             $this->getResponse()->setHttpResponseCode(500);
             $this->getResponse()->setBody(json_encode(
-                ['error_message' => 'Cannot return feed. Please look to log file for more information.']
+                array('error_message' => 'Cannot return feed. Please look to log file for more information.')
             ));
         }
     }
