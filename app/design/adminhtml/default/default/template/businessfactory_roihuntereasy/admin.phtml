@@ -45,7 +45,6 @@
     iFrame.addEventListener('load', function () {
         setTimeout(function(){
             console.log('hiding Loader');
-            loadingMessageEl.style.display = 'none';
 
             // pass base url to React iframe fro future API calls to this site
             iFrame.contentWindow.postMessage({
