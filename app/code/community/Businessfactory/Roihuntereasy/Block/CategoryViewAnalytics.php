@@ -11,7 +11,7 @@ class Businessfactory_Roihuntereasy_Block_CategoryViewAnalytics extends Business
             $count = 0;
             $productIds = array();
             foreach ($products as $product) {
-                array_push($productIds, $product->getSku());
+                array_push($productIds, "mag_".$product->getId());
                 if (count($productIds) >= $limit) {
                     break;
                 }

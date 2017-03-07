@@ -11,14 +11,25 @@ class Businessfactory_Roihuntereasy_Model_AddedToCartObserver extends Mage_Core_
     {
         try {
             $product = $observer->getEvent()->getProduct();
+            $quoteItem = $observer->getEvent()->getQuoteItem();
+            $quoteItemProduct= $quoteItem->getProduct();
 
-            $sku = $product->getSku();
+            if ($product->getTypeId() == "configurable") {
+                $id = "mag_".$quoteItemProduct->getParentId()."_".$quoteItemProduct->getEntityId();
+            }
+            else {
+                $id = "mag_".$quoteItemProduct->getEntityId();
+            }
             $price = $product->getFinalPrice();
+
+
+//            Mage::log($product->toJson(), null, 'debug.log');
+//            Mage::log($quoteItem->toJson(), null, 'debug.log');
 
             // set product as session data
             $product_remarketing_data = array(
                 'pagetype' => 'cart',
-                'id' => $sku,
+                'id' => $id,
                 'price' => $price
             );
             $product_remarketing_json = json_encode($product_remarketing_data);

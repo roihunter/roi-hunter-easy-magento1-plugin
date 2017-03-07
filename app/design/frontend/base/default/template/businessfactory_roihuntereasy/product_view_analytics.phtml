@@ -11,7 +11,7 @@ $_prodPrice = null;
 if ($_product) {
     $_prodName = $_product->getName();
     $_prodSku = $_product->getSku();
-    $_prodId = $_product->getId();
+    $_prodId = "mag_".$_product->getId();
     $_prodPrice = $_product->getFinalPrice();
     // Regular price without discount
     // $_prodPrice = $_product->getPriceInfo()->getPrice('regular_price')->getAmount()->getValue();
@@ -26,7 +26,7 @@ Remarketing tags may not be associated with personally identifiable information 
     /* <![CDATA[ */
     var google_conversion_id = <?php echo $_conversionId ?>;
     var google_custom_params = {
-        ecomm_prodid: '<?php echo $_prodSku ?>',
+        ecomm_prodid: '<?php echo $_prodId ?>',
         ecomm_pagetype: 'product',
         ecomm_totalvalue: <?php echo $_prodPrice ?>,
     };;

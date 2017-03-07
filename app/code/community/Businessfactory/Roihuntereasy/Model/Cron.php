@@ -109,9 +109,6 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
 
             foreach ($products as $_product) {
 
-                $xmlWriter->writeElement('store', $_product->getStoreId());
-//                $_product->setStoreId(Mage::app()->getStore());
-
                 switch ($_product->getTypeId()) {
                     case 'downloadable':
                         if ($_product->getPrice() <= 0) {
@@ -208,6 +205,10 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
     {
         $xmlWriter->startElement('item');
 
+        // ID belongs to the simple product's SKU
+        $xmlWriter->writeElement('g:id', "mag_".$_product->getId());
+        $xmlWriter->writeElement('g:display_ads_id', "mag_".$_product->getId());
+
         // process common attributes
         $this->write_parent_product_attributes($_product, $xmlWriter);
         // process advanced attributes
@@ -286,12 +287,10 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
      */
     function write_child_product_attributes($_product, $xmlWriter)
     {
-        $xmlWriter->writeElement('g:id', $_product->getId());
         $xmlWriter->writeElement('g:image_link', $this->get_image_url($_product));
 
 //        $this->_logger->debug('gtin: ' . $_product->getEan());
         $xmlWriter->writeElement('g:mpn', $_product->getSku());
-        $xmlWriter->writeElement('display_ads_id', $_product->getSku());
         if (strlen($_product->getEan()) > 7) {
             $xmlWriter->writeElement('g:gtin', $_product->getEan());
         }
@@ -360,7 +359,10 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         foreach ($simple_collection as $_childproduct) {
             $xmlWriter->startElement('item');
 
-            $xmlWriter->writeElement('g:item_group_id', $_product->getSku());
+            // ID belongs to the child product's ID to make this product unique
+            $xmlWriter->writeElement('g:id', "mag_".$_product->getId()."_".$_childproduct->getId());
+            $xmlWriter->writeElement('g:item_group_id', "mag_".$_product->getId());
+            $xmlWriter->writeElement('g:display_ads_id', "mag_".$_product->getId()."_".$_childproduct->getId());
 
             // process common attributes
             $this->write_parent_product_attributes($_product, $xmlWriter);
