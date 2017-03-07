@@ -1,5 +1,4 @@
 <!--"http://localhost:3000"    "http://magento.roihunter.com/" -->
-<!-- TODO testing url-->
 <iframe src="//magento.roihunter.com/"
         scrolling="yes"
         frameBorder="0"
@@ -44,30 +43,32 @@
     var loadingMessageEl = document.getElementById('loadingMessage');
 
     iFrame.addEventListener('load', function () {
-        console.log('hiding Loader');
-        loadingMessageEl.style.display = 'none';
+        setTimeout(function(){
+            console.log('hiding Loader');
+            loadingMessageEl.style.display = 'none';
 
-        // pass base url to React iframe fro future API calls to this site
-        iFrame.contentWindow.postMessage({
-                "type": "roihunter_magento_plugin",
-                "storeUrl": storeUrl,
-                "storeName": storeName,
-                "storeCurrency": storeCurrency,
-                "storeLanguage": storeLanguage,
-                "storeCountry": storeCountry,
-                "magentoMode": magentoMode,
+            // pass base url to React iframe fro future API calls to this site
+            iFrame.contentWindow.postMessage({
+                    "type": "roihunter_magento_plugin",
+                    "storeUrl": storeUrl,
+                    "storeName": storeName,
+                    "storeCurrency": storeCurrency,
+                    "storeLanguage": storeLanguage,
+                    "storeCountry": storeCountry,
+                    "magentoMode": magentoMode,
 
-                // Database part
-                "customerId": customerId,
-                "accessToken": accessToken,
-                "clientToken": clientToken,
-                "managedMerchants": managedMerchants,
-                "adultOriented": adultOriented,
-                "status": status,
-                "errors": errors,
-                "creationState": creationState
-            }, '*'
-        );
+                    // Database part
+                    "customerId": customerId,
+                    "accessToken": accessToken,
+                    "clientToken": clientToken,
+                    "managedMerchants": managedMerchants,
+                    "adultOriented": adultOriented,
+                    "status": status,
+                    "errors": errors,
+                    "creationState": creationState
+                }, '*'
+            );
+        }, 1000);
     });
 </script>
 
