@@ -38,26 +38,23 @@ ROI Hunter Easy marketing extension is available in **EN**. Support is also avai
 
 # Installation
 
-You can install the extension through Magento Connect Manager which is located in the administration of your shop. 
+## Magento Connect Manager
 
-There are 2 ways how to install the extension - either through Magento Connect store or by manually uploading the package. 
+You can install the extension through Magento Connect Manager which is located in the administration of your shop under System -> Magento Connect -> Magento Connect Manager.
 
 ![magento_connect.png](https://s24.postimg.org/xklpxpysl/mc01.jpg)
 
-![magento_connect2.png](https://static10.cminds.com/wp-content/uploads/How-to-install-a-magento-extension-Magento-connect.jpg)
+There are two ways how to install the extension through Magento Connect Manager. 
 
-## Magento Connect Key
+1) Magento Connect Key - obtained through [Magento Connect](https://www.magentocommerce.com/magento-connect/roi-hunter-easy.html)
 
-Magento 1.9 is about to be released on Magento Connect. 
+ 2) Uploading the ZIP file - you will find the latest release of the extension in the [Releases tab](https://github.com/business-factory/roi-hunter-easy-magento1-plugin/releases).
 
-## Manually
+![magento_connect2.png](http://i66.tinypic.com/bi9yy1.jpg)
 
-* Download the package located in [Releases tab](https://github.com/business-factory/roi-hunter-easy-magento1-plugin/releases).
-* Upload the package
+## Magento Marketplace
 
-The Cache can be cleared after you log into the admin panel and go to the SYSTEM -> Cache Management. You can refer to the below screenshot.
-
-![magento_flush_cache.png](https://static08.cminds.com/wp-content/uploads/How-to-install-a-magento-extension-cache-management.jpg)
+Follow the installation instructions on [Magento Marketplace](https://marketplace.magento.com/businessfactory-roihunter-easy.html).
 
 
 # FAQ
@@ -68,3 +65,4 @@ If you need to return the plugin to its original settings (for example when you 
 
 # Support
 If you would have any difficulty with the usage of this extension, or have any issues you would like to raise with us please feel free to submit a support ticket by emailing easy@roihunter.com.
+ 
