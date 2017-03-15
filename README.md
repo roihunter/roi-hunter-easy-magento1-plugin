@@ -35,7 +35,8 @@ ROI Hunter Easy marketing extension is available in **EN**. Support is also avai
 
 \* Extension do not cover your Google Adwords Ad Spend. 
 
-
+# Try our demo
+[Click for open ROI Hunter Easy Demo](https://easy.roihunter.com/demo?utm_source=github&utm_campaign=github_readme&utm_medium=website&utm_content=magento1#demo)
 # Installation
 
 You can install the extension through Magento Connect Manager which is located in the administration of your shop under System -> Magento Connect -> Magento Connect Manager.
