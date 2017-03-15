@@ -38,23 +38,37 @@ ROI Hunter Easy marketing extension is available in **EN**. Support is also avai
 
 # Installation
 
-## Magento Connect Manager
-
 You can install the extension through Magento Connect Manager which is located in the administration of your shop under System -> Magento Connect -> Magento Connect Manager.
 
 ![magento_connect.png](https://s24.postimg.org/xklpxpysl/mc01.jpg)
 
-There are two ways how to install the extension through Magento Connect Manager. 
+There are two ways how to install the extension through Magento Connect Manager:
 
-1) Magento Connect Key - obtained through [Magento Connect](https://www.magentocommerce.com/magento-connect/roi-hunter-easy.html)
+### Direct package file upload
+1) Download the latest package file in the [Releases tab](https://github.com/business-factory/roi-hunter-easy-magento1-plugin/releases).
+![Releases.png](https://easy.roihunter.com/img/releases.png)
+2) Go to Magento Connect Manager in your Magento shop administration, select package file from your computer and then click to _Upload_.
+![Upload.jpg](https://easy.roihunter.com/img/upload.jpg)
 
- 2) Uploading the ZIP file - you will find the latest release of the extension in the [Releases tab](https://github.com/business-factory/roi-hunter-easy-magento1-plugin/releases).
+### Magento Connect extension key 
+The second way is to install package from Magento Connect by insert extension key to yout Magento Connect Manager.
 
-![magento_connect2.png](http://i66.tinypic.com/bi9yy1.jpg)
+1) Go to [Magento Connect](https://www.magentocommerce.com/magento-connect/roi-hunter-easy.html) ROI Hunter Easy extension page. 
+2) Click to _Install_ button and get the extension key.
+3) Paste extension key to Magento Connect Manager in your Magento shop administration and click to _Install_.
+![connect.jpg](https://easy.roihunter.com/img/connect.jpg)
+
+You can see installation procedure information like this in the Magento Connect Manager console:
+![console.jpg](https://easy.roihunter.com/img/console.jpg)
 
 ## Magento Marketplace
 
-Follow the installation instructions on [Magento Marketplace](https://marketplace.magento.com/businessfactory-roihunter-easy.html).
+If you are familiar with Magento Marketplace platform, you can install our plugin directly from there. Just follow the installation instructions on [Magento Marketplace](https://marketplace.magento.com/businessfactory-roihunter-easy.html).
+
+## Check your installation
+After sucessfull installation you can see new _ROI Hunter Easy_ item in Main menu of your Magento store administration.
+![menu.jpg](https://easy.roihunter.com/img/menu.jpg)
+After installation continue by click to _ROI Hunter Easy_ menu item and follow the instructions in our Sign Up wizard.
 
 
 # FAQ
