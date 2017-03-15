@@ -67,7 +67,9 @@ If you are familiar with Magento Marketplace platform, you can install our plugi
 
 ## Check your installation
 After sucessfull installation you can see new _ROI Hunter Easy_ item in Main menu of your Magento store administration.
+
 ![menu.jpg](https://easy.roihunter.com/img/menu.jpg)
+
 After installation continue by click to _ROI Hunter Easy_ menu item and follow the instructions in our Sign Up wizard.
 
 
