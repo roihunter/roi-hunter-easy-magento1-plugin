@@ -28,7 +28,7 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
     }
 
     /**
-     * http://store.com/roihuntereasy/storedetails/check
+     * http://store.com/roihuntereasy/storedetails/debug
      */
     public function debugAction()
     {
@@ -74,7 +74,9 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
 
             $resultData = $_SERVER;
             $resultData['Magento_Mode'] = Mage::getIsDeveloperMode() ? "developer" : "production";;
-            $resultData['Php_Version'] = phpversion();
+            $resultData['PHP_Version'] = phpversion();
+            $resultData['Magento_Version'] = Mage::getVersion();
+            $resultData['ROI_Hunter_Easy_Version'] = (string) Mage::getConfig()->getNode()->modules->Businessfactory_Roihuntereasy->version;
 
             $response->setBody(json_encode($resultData));
         } catch (Exception $exception) {

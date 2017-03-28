@@ -13,24 +13,38 @@ class Businessfactory_Roihuntereasy_Block_Adminhtml_Admin extends Mage_Adminhtml
         return Mage::getIsDeveloperMode() ? "developer" : "production";
     }
 
+    public function getDefaultStoreId()
+    {
+        return Mage::app()
+            ->getWebsite(true)
+            ->getDefaultGroup()
+            ->getDefaultStoreId();;
+    }
+
     public function getStoreBaseUrl()
     {
-        return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB, true);
+
+        return Mage::app()->getStore($this->getDefaultStoreId())->getBaseUrl();
     }
 
     public function getStoreName()
     {
-        return $this->store->getFrontendName();
+        return Mage::app()->getStore($this->getDefaultStoreId())->getFrontendName();
     }
 
     public function getStoreLogo()
     {
-        return $this->store->getLogoSrc();
+        return Mage::app()->getStore($this->getDefaultStoreId())->getLogoSrc();
     }
 
     public function getStoreCurrency()
     {
-        return $this->store->getCurrentCurrencyCode();
+        return Mage::app()->getStore($this->getDefaultStoreId())->getCurrentCurrencyCode();
+    }
+
+    public function getPluginVersion()
+    {
+        return (string) Mage::getConfig()->getNode()->modules->Businessfactory_Roihuntereasy->version;
     }
 
     public function getStoreLanguage()

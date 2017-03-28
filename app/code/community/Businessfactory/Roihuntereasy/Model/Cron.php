@@ -190,8 +190,13 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         $collection->addAttributeToFilter('visibility', $visibility);
         $collection->addAttributeToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED);
 
+        // setting correct Product URL
         $collection->addUrlRewrite();
-
+        $storeId = Mage::app()
+            ->getWebsite(true)
+            ->getDefaultGroup()
+            ->getDefaultStoreId();
+        $collection->setStoreId($storeId);
         $collection->load();
 
         return $collection;
@@ -228,8 +233,15 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
     {
         $xmlWriter->writeElement('g:title', $_product->getName());
         $xmlWriter->writeElement('g:description', $this->get_description($_product));
-        $xmlWriter->writeElement('g:link', $_product->getProductUrl());
-        $xmlWriter->writeElement('g:brand', $_product->getAttributeText('manufacturer'));
+        // Product URL
+        // $_product->getData('request_path') can return product handle like - aviator-sunglasses.html
+        $xmlWriter->writeElement('g:link', $_product->getUrlInStore());
+
+        // replaced getAttributeText with safer option
+        $attributeCode = 'brand';
+        if ($_product->getData($attributeCode) !== null){
+            $xmlWriter->writeElement('g:brand', $_product->getAttributeText($attributeCode));
+        }
 
         $xmlWriter->writeElement('g:condition', 'new');
         // TODO add more attributes if needed.
@@ -297,8 +309,17 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
 
         $xmlWriter->writeElement('g:price', $_product->getPrice());
         $xmlWriter->writeElement('g:sale_price', $_product->getSpecialPrice());
-        $xmlWriter->writeElement('g:size', $_product->getAttributeText('size'));
-        $xmlWriter->writeElement('g:color', $_product->getAttributeText('color'));
+        // replaced getAttributeText with safer option
+        $attributeCode = 'color';
+        if ($_product->getData($attributeCode) !== null){
+            $xmlWriter->writeElement('g:color', $_product->getAttributeText($attributeCode));
+        }
+        // replaced getAttributeText with safer option
+        $attributeCode = 'size';
+        if ($_product->getData($attributeCode) !== null){
+            $xmlWriter->writeElement('g:size', $_product->getAttributeText($attributeCode));
+        }
+
         $xmlWriter->writeElement('g:availability', $this->do_isinstock($_product));
     }
 
