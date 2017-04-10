@@ -40,7 +40,8 @@ class Businessfactory_Roihuntereasy_CronController extends Mage_Core_Controller_
                 }
 
                 Mage::log("Cron generating started manually.", null, 'cron.log');
-                $resultCode = $this->cron->createFeed();
+                $resultCode = $this->cron->createFeed("xml");
+                $resultCode = $this->cron->createFeed("csv");
                 if($resultCode == true){
                     $response->setBody(json_encode('Feed generated.'));
                 } else {
@@ -48,7 +49,7 @@ class Businessfactory_Roihuntereasy_CronController extends Mage_Core_Controller_
                 }
             } catch (Exception $exception) {
                 Mage::log(__METHOD__ . " exception.", null, 'errors.log');
-                Mage::log($exception, null, 'errors.log');
+                Mage::log($exception->getMessage(), null, 'errors.log');
                 Mage::log($request, null, 'errors.log');
                 $response->setHttpResponseCode(500);
                 $response->setBody(json_encode('Feed generation failed.'));
@@ -109,7 +110,8 @@ class Businessfactory_Roihuntereasy_CronController extends Mage_Core_Controller_
                 $io->close();
 
                 Mage::log("Cron generating started manually.", null, 'cron.log');
-                $resultCode = $this->cron->createFeed();
+                $resultCode = $this->cron->createFeed("xml");
+                $resultCode = $this->cron->createFeed("csv");
                 if($resultCode == true){
                     $response->setBody(json_encode('Feed generated.'));
                 } else {

@@ -7,7 +7,11 @@ class Businessfactory_Roihuntereasy_FeedController extends Mage_Core_Controller_
         Mage::log("Get product feed called.", null, 'feed.log');
 
         try {
-            $file = "feeds/roi_hunter_easy_feed_final.xml";
+            $format = $this->getRequest()->getParam("format");
+            if (!isset($format) || trim($format)==='') {
+                $format = "xml";
+            }
+            $file =  "feeds/roi_hunter_easy_feed_final." . $format;
 
             if (file_exists($file)) {
                 header('Content-Description: File Transfer');
