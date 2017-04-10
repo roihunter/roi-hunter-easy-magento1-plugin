@@ -4,10 +4,16 @@ class Businessfactory_Roihuntereasy_CronController extends Mage_Core_Controller_
 {
     protected $cron;
 
+    protected $supportedFileFormats;
+
     public function _construct()
     {
         parent::_construct();
         $this->cron = new Businessfactory_Roihuntereasy_Model_Cron();
+        $this->supportedFileFormats = array(
+            "xml",
+            "csv"
+        );
     }
 
     /**
@@ -39,13 +45,11 @@ class Businessfactory_Roihuntereasy_CronController extends Mage_Core_Controller_
                     return;
                 }
 
-                Mage::log("Cron generating started manually.", null, 'cron.log');
-                $resultCode = $this->cron->createFeed("xml");
-                $resultCode = $this->cron->createFeed("csv");
+                $resultCode = $this->generateSupportedFeeds();
                 if($resultCode == true){
-                    $response->setBody(json_encode('Feed generated.'));
+                    $response->setBody(json_encode('Feeds generated.'));
                 } else {
-                    $response->setBody(json_encode('Feed not generated.'));
+                    $response->setBody(json_encode('One or more feeds not generated. See logs for more info.'));
                 }
             } catch (Exception $exception) {
                 Mage::log(__METHOD__ . " exception.", null, 'errors.log');
@@ -94,28 +98,28 @@ class Businessfactory_Roihuntereasy_CronController extends Mage_Core_Controller_
                     }
                 }
 
-                $filename = "businessFactoryRoiHunterEasyFeedSign";
-                $io = new Varien_Io_File();
-                $io->open(array('path' => Mage::getBaseDir()));
+                // remove file locks
+                foreach ($this->supportedFileFormats as $fileFormat) {
+                    $filename = "businessFactoryRoiHunterEasyFeedSign".$fileFormat;
+                    $io = new Varien_Io_File();
+                    $io->open(array('path' => Mage::getBaseDir()));
 
-                if (!$io->fileExists($filename)) {
-                    $response->setBody(json_encode("Reset already completed."));
+                    if (!$io->fileExists($filename)) {
+                        $response->setBody(json_encode("Reset already completed."));
+                    }
+                    else {
+                        // try to delete feed generation sign.
+                        $io->rm($filename);
+                        $response->setBody(json_encode("Reset completed."));
+                    }
                 }
-                else {
-                    // try to delete feed generation sign.
-                    $io->rm($filename);
-                    $response->setBody(json_encode("Reset completed."));
-                }
 
-                $io->close();
-
-                Mage::log("Cron generating started manually.", null, 'cron.log');
-                $resultCode = $this->cron->createFeed("xml");
-                $resultCode = $this->cron->createFeed("csv");
+                // regenerate feeds
+                $resultCode = $this->generateSupportedFeeds();
                 if($resultCode == true){
-                    $response->setBody(json_encode('Feed generated.'));
+                    $response->setBody(json_encode('Feeds generated.'));
                 } else {
-                    $response->setBody(json_encode('Feed not generated.'));
+                    $response->setBody(json_encode('One or more feeds not generated. See logs for more info.'));
                 }
             } catch (Exception $exception) {
                 Mage::log(__METHOD__ . " exception.", null, 'errors.log');
@@ -129,6 +133,15 @@ class Businessfactory_Roihuntereasy_CronController extends Mage_Core_Controller_
         } else {
             $response->setHttpResponseCode(400);
         }
+    }
+
+    protected function generateSupportedFeeds() {
+        $resultCode = true;
+        foreach ($this->supportedFileFormats as $fileFormat) {
+            Mage::log("Cron generating started manually for file format: " . $fileFormat, null, 'cron.log');
+            $resultCode = $resultCode && $this->cron->createFeed($fileFormat);
+        }
+        return $resultCode;
     }
 
 }
