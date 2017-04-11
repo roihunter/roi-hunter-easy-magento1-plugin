@@ -22,12 +22,8 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
     /**
      * Method start new feed creation process, if not another feed creation process running.
      */
-    public function createFeed($fileFormat)
+    public function createFeed($fileFormat="xml")
     {
-        if (!isset($fileFormat) || trim($fileFormat)==='' ) {
-            $fileFormat = "xml";
-        }
-
         Mage::log($fileFormat . ": "  . __METHOD__ . " cron", null, "cron.log");
         $filename = "businessFactoryRoiHunterEasyFeedSign" . $fileFormat;
         $io = new Varien_Io_File();
@@ -570,7 +566,7 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         if (!$description) {
             $description = $product->getDescription();
         }
-        return ($description);
+        return $description;
     }
 
     /**
