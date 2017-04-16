@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Businessfactory_Roihuntereasy>
-            <version>1.0.7</version>
+            <version>1.0.9</version>
         </Businessfactory_Roihuntereasy>
     </modules>
     <admin>
@@ -118,10 +118,16 @@
     </global>
     <crontab>
         <jobs>
-            <businessfactory_roihuntereasy>
-                <schedule><cron_expr>*/15 * * * *</cron_expr></schedule>
-                <run><model>businessfactory_roihuntereasy/cron::createFeed</model></run>
-            </businessfactory_roihuntereasy>
+            <businessfactory_roihuntereasy_xml>
+                <schedule><cron_expr>0 */2 * * *</cron_expr></schedule>
+                <run><model>businessfactory_roihuntereasy/cron::scheduleFeed</model></run>
+                <format>xml</format>
+            </businessfactory_roihuntereasy_xml>
+            <businessfactory_roihuntereasy_csv>
+                <schedule><cron_expr>0 */2 * * *</cron_expr></schedule>
+                <run><model>businessfactory_roihuntereasy/cron::scheduleFeed</model></run>
+                <format>csv</format>
+            </businessfactory_roihuntereasy_csv>
         </jobs>
     </crontab>
 </config>
