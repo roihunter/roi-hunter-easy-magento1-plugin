@@ -18,11 +18,11 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
         $request = $this->getRequest();
         $response = $this->getResponse();
 
-        $response->setHeader('Content-type', 'application/json');
-        $response->setHeader('Access-Control-Allow-Origin', '*', true);
-        $response->setHeader('Access-Control-Allow-Methods', 'OPTIONS,GET,POST', true);
-        $response->setHeader('Access-Control-Max-Age', '60', true);
-        $response->setHeader('Access-Control-Allow-Headers', 'X-Authorization', true);
+        $response->setHeader("Content-type", "application/json");
+        $response->setHeader("Access-Control-Allow-Origin", "*", true);
+        $response->setHeader("Access-Control-Allow-Methods", "OPTIONS,GET,POST", true);
+        $response->setHeader("Access-Control-Max-Age", "60", true);
+        $response->setHeader("Access-Control-Allow-Headers", "X-Authorization", true);
 
         $response->setBody(json_encode("rh-easy-active."));
     }
@@ -37,13 +37,13 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
         $request = $this->getRequest();
         $response = $this->getResponse();
 
-        $response->setHeader('Content-type', 'application/json');
-        $response->setHeader('Access-Control-Allow-Origin', '*', true);
-        $response->setHeader('Access-Control-Allow-Methods', 'OPTIONS,GET,POST', true);
-        $response->setHeader('Access-Control-Max-Age', '60', true);
-        $response->setHeader('Access-Control-Allow-Headers', 'X-Authorization', true);
+        $response->setHeader("Content-type", "application/json");
+        $response->setHeader("Access-Control-Allow-Origin", "*", true);
+        $response->setHeader("Access-Control-Allow-Methods", "OPTIONS,GET,POST", true);
+        $response->setHeader("Access-Control-Max-Age", "60", true);
+        $response->setHeader("Access-Control-Allow-Headers", "X-Authorization", true);
 
-        if ($request->getMethod() === 'GET') {
+        if ($request->getMethod() === "GET") {
             $this->processDebugGET();
         }
     }
@@ -60,9 +60,9 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
 
         try {
             // If table not empty, require authorization.
-            $mainItemCollection = Mage::getModel('businessfactory_roihuntereasy/main')->getCollection();
+            $mainItemCollection = Mage::getModel("businessfactory_roihuntereasy/main")->getCollection();
             if ($mainItemCollection->count() > 0) {
-                $authorizationHeader = $this->getRequest()->getHeader('X-Authorization');
+                $authorizationHeader = $this->getRequest()->getHeader("X-Authorization");
                 $dataEntity = $mainItemCollection->getLastItem();
                 // If data exist check for client token.
                 if ($dataEntity->getClientToken() != null && $dataEntity->getClientToken() !== $authorizationHeader) {
@@ -73,16 +73,16 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
             }
 
             $resultData = $_SERVER;
-            $resultData['Magento_Mode'] = Mage::getIsDeveloperMode() ? "developer" : "production";;
-            $resultData['PHP_Version'] = phpversion();
-            $resultData['Magento_Version'] = Mage::getVersion();
-            $resultData['ROI_Hunter_Easy_Version'] = (string) Mage::getConfig()->getNode()->modules->Businessfactory_Roihuntereasy->version;
+            $resultData["Magento_Mode"] = Mage::getIsDeveloperMode() ? "developer" : "production";;
+            $resultData["PHP_Version"] = phpversion();
+            $resultData["Magento_Version"] = Mage::getVersion();
+            $resultData["ROI_Hunter_Easy_Version"] = (string) Mage::getConfig()->getNode()->modules->Businessfactory_Roihuntereasy->version;
 
             $response->setBody(json_encode($resultData));
         } catch (Exception $exception) {
-            Mage::log(__METHOD__ . " exception.", null, 'errors.log');
-            Mage::log($exception, null, 'errors.log');
-            Mage::log($request, null, 'errors.log');
+            Mage::log(__METHOD__ . " exception.", null, "errors.log");
+            Mage::log($exception, null, "errors.log");
+            Mage::log($request, null, "errors.log");
             $response->setHttpResponseCode(500);
         }
     }
@@ -92,18 +92,18 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
      */
     public function logsAction()
     {
-        Mage::log(__METHOD__ . "- Debug called.", 'debug.log');
+        Mage::log(__METHOD__ . "- Debug called.", "debug.log");
 
         $request = $this->getRequest();
         $response = $this->getResponse();
 
-        $response->setHeader('Content-type', 'application/json');
-        $response->setHeader('Access-Control-Allow-Origin', '*', true);
-        $response->setHeader('Access-Control-Allow-Methods', 'OPTIONS,GET,POST', true);
-        $response->setHeader('Access-Control-Max-Age', '60', true);
-        $response->setHeader('Access-Control-Allow-Headers', 'X-Authorization', true);
+        $response->setHeader("Content-type", "application/json");
+        $response->setHeader("Access-Control-Allow-Origin", "*", true);
+        $response->setHeader("Access-Control-Allow-Methods", "OPTIONS,GET,POST", true);
+        $response->setHeader("Access-Control-Max-Age", "60", true);
+        $response->setHeader("Access-Control-Allow-Headers", "X-Authorization", true);
 
-        if ($request->getMethod() === 'GET') {
+        if ($request->getMethod() === "GET") {
             $this->processLogsGET();
         }
     }
@@ -120,9 +120,9 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
 
         try {
             // If table not empty, require authorization.
-            $mainItemCollection = Mage::getModel('businessfactory_roihuntereasy/main')->getCollection();
+            $mainItemCollection = Mage::getModel("businessfactory_roihuntereasy/main")->getCollection();
             if ($mainItemCollection->count() > 0) {
-                $authorizationHeader = $this->getRequest()->getHeader('X-Authorization');
+                $authorizationHeader = $this->getRequest()->getHeader("X-Authorization");
                 $dataEntity = $mainItemCollection->getLastItem();
                 // If data exist check for client token.
                 if ($dataEntity->getClientToken() != null && $dataEntity->getClientToken() !== $authorizationHeader) {
@@ -133,8 +133,8 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
             }
 
             $zipFilename = "all_logs.zip";
-            $rootPath = Mage::getBaseDir('log');
-            $zipAbsolutePath = $rootPath . '/' . $zipFilename;
+            $rootPath = Mage::getBaseDir("log");
+            $zipAbsolutePath = $rootPath . "/" . $zipFilename;
 
 
             $zip = new ZipArchive();
@@ -154,35 +154,35 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
 
             foreach ($files as $name => $file) {
                 // Skip directories (they would be added automatically)
-                if (!$file->isDir() && strpos($file->getFilename(), 'all_logs.zip') === false) {
+                if (!$file->isDir() && strpos($file->getFilename(), "all_logs.zip") === false) {
                     // Get real and relative path for current file
                     $filePath = $file->getRealPath();
                     $relativePath = substr($filePath, strlen($rootPath));
                     // Add current file to archive
                     if ($zip->addFile($filePath, $relativePath) !== true) {
-                        Mage::log("cannot add file to zip", null, 'cro.log');
+                        Mage::log("cannot add file to zip", null, "cro.log");
                         $response->setBody("cannot add file to zip");
                         return;
                     }
                     else {
-                        Mage::log("added file to zip", null, 'cro.log');
+                        Mage::log("added file to zip", null, "cro.log");
                     }
                 }
             }
             // Zip archive will be created only after closing object
             $zip->close();
 
-            header('Content-Description: File Transfer');
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="' . basename($zipAbsolutePath) .'"');
-            header('Expires: 0');
-            header('Cache-Control: must-revalidate');
-            header('Pragma: public');
+            header("Content-Description: File Transfer");
+            header("Content-Type: application/octet-stream");
+            header("Content-Disposition: attachment; filename="" . basename($zipAbsolutePath) .""");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate");
+            header("Pragma: public");
             readfile($zipAbsolutePath);
         } catch (Exception $exception) {
-            Mage::log(__METHOD__ . " exception.", null, 'errors.log');
-            Mage::log($exception, null, 'errors.log');
-            Mage::log($request, null, 'errors.log');
+            Mage::log(__METHOD__ . " exception.", null, "errors.log");
+            Mage::log($exception, null, "errors.log");
+            Mage::log($request, null, "errors.log");
             $response->setHttpResponseCode(500);
         }
     }
@@ -195,15 +195,15 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
         $request = $this->getRequest();
         $response = $this->getResponse();
 
-        $response->setHeader('Content-type', 'application/json');
-        $response->setHeader('Access-Control-Allow-Origin', '*', true);
-        $response->setHeader('Access-Control-Allow-Methods', 'OPTIONS,GET,POST', true);
-        $response->setHeader('Access-Control-Max-Age', '60', true);
-        $response->setHeader('Access-Control-Allow-Headers', 'X-Authorization', true);
+        $response->setHeader("Content-type", "application/json");
+        $response->setHeader("Access-Control-Allow-Origin", "*", true);
+        $response->setHeader("Access-Control-Allow-Methods", "OPTIONS,GET,POST", true);
+        $response->setHeader("Access-Control-Max-Age", "60", true);
+        $response->setHeader("Access-Control-Allow-Headers", "X-Authorization", true);
 
-        if ($request->getMethod() === 'GET') {
+        if ($request->getMethod() === "GET") {
             $this->processStateGET();
-        } else if ($request->getMethod() === 'POST') {
+        } else if ($request->getMethod() === "POST") {
             $this->processStatePOST();
         }
     }
@@ -220,7 +220,7 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
         $response = $this->getResponse();
 
         try {
-            $mainItemCollection = Mage::getModel('businessfactory_roihuntereasy/main')->getCollection();
+            $mainItemCollection = Mage::getModel("businessfactory_roihuntereasy/main")->getCollection();
             // If table empty, then create new item.
             if ($mainItemCollection->count() <= 0) {
                 $response->setBody(json_encode("Entry not exist."));
@@ -229,9 +229,9 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
                 $response->setBody(json_encode($mainItemCollection->getLastItem()->getCreationState()));
             }
         } catch (Exception $exception) {
-            Mage::log(__METHOD__ . " exception.", null, 'errors.log');
-            Mage::log($exception, null, 'errors.log');
-            Mage::log($request, null, 'errors.log');
+            Mage::log(__METHOD__ . " exception.", null, "errors.log");
+            Mage::log($exception, null, "errors.log");
+            Mage::log($request, null, "errors.log");
             $response->setHttpResponseCode(500);
         }
     }
@@ -250,8 +250,8 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
         try {
             // Get request params
             $requestData = $request->getParams();
-            $authorizationHeader = $request->getHeader('X-Authorization');
-            $newCreationState = $request->getParam('new_state');
+            $authorizationHeader = $request->getHeader("X-Authorization");
+            $newCreationState = $request->getParam("new_state");
 
             if ($newCreationState === NULL) {
                 $response->setBody(json_encode("Missing parameter."));
@@ -259,12 +259,12 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
                 return;
             } else {
 //             Prepare database item. If table empty, then create new item.
-                $mainItemCollection = Mage::getModel('businessfactory_roihuntereasy/main')->getCollection();
+                $mainItemCollection = Mage::getModel("businessfactory_roihuntereasy/main")->getCollection();
                 if ($mainItemCollection->count() <= 0) {
-                    $dataEntity = Mage::getModel('businessfactory_roihuntereasy/main');
+                    $dataEntity = Mage::getModel("businessfactory_roihuntereasy/main");
                     $dataEntity->setDescription("New");
                 } else {
-                    $dataEntity = Mage::getModel('businessfactory_roihuntereasy/main')->load($mainItemCollection->getLastItem()->getId());
+                    $dataEntity = Mage::getModel("businessfactory_roihuntereasy/main")->load($mainItemCollection->getLastItem()->getId());
                     $dataEntity->setDescription("Updated");
 
 //                    If data already exist check for client token.
@@ -284,9 +284,9 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
                 )));
             }
         } catch (Exception $exception) {
-            Mage::log(__METHOD__ . " exception.", null, 'errors.log');
-            Mage::log($exception, null, 'errors.log');
-            Mage::log($request, null, 'errors.log');
+            Mage::log(__METHOD__ . " exception.", null, "errors.log");
+            Mage::log($exception, null, "errors.log");
+            Mage::log($request, null, "errors.log");
             $response->setHttpResponseCode(500);
         }
     }
@@ -299,15 +299,15 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
         $request = $this->getRequest();
         $response = $this->getResponse();
 
-        $response->setHeader('Content-type', 'application/json');
-        $response->setHeader('Access-Control-Allow-Origin', '*', true);
-        $response->setHeader('Access-Control-Allow-Methods', 'OPTIONS,GET,POST', true);
-        $response->setHeader('Access-Control-Max-Age', '60', true);
-        $response->setHeader('Access-Control-Allow-Headers', 'X-Authorization', true);
+        $response->setHeader("Content-type", "application/json");
+        $response->setHeader("Access-Control-Allow-Origin", "*", true);
+        $response->setHeader("Access-Control-Allow-Methods", "OPTIONS,GET,POST", true);
+        $response->setHeader("Access-Control-Max-Age", "60", true);
+        $response->setHeader("Access-Control-Allow-Headers", "X-Authorization", true);
 
-        if ($request->getMethod() === 'GET') {
+        if ($request->getMethod() === "GET") {
             $this->processAddGET();
-        } else if ($request->getMethod() === 'POST') {
+        } else if ($request->getMethod() === "POST") {
             $this->processAddPOST();
         }
     }
@@ -324,8 +324,8 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
         $response = $this->getResponse();
 
         try {
-            $mainItemCollection = Mage::getModel('businessfactory_roihuntereasy/main')->getCollection();
-            $authorizationHeader = $this->getRequest()->getHeader('X-Authorization');
+            $mainItemCollection = Mage::getModel("businessfactory_roihuntereasy/main")->getCollection();
+            $authorizationHeader = $this->getRequest()->getHeader("X-Authorization");
 
             // If table empty, then create new item.
             if ($mainItemCollection->count() <= 0) {
@@ -342,9 +342,9 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
                 $response->setBody(json_encode($dataEntity->getData()));
             }
         } catch (Exception $exception) {
-            Mage::log(__METHOD__ . " exception.", null, 'errors.log');
-            Mage::log($exception, null, 'errors.log');
-            Mage::log($request, null, 'errors.log');
+            Mage::log(__METHOD__ . " exception.", null, "errors.log");
+            Mage::log($exception, null, "errors.log");
+            Mage::log($request, null, "errors.log");
             $response->setHttpResponseCode(500);
         }
     }
@@ -363,18 +363,18 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
         try {
             // Get request params
             $requestData = $request->getParams();
-            Mage::log("Process add request with data: ", null, 'api.log');
-            Mage::log($requestData, null, 'api.log');
+            Mage::log("Process add request with data: ", null, "debug.log");
+            Mage::log(json_encode($requestData), null, "debug.log");
 
-            $authorizationHeader = $request->getHeader('X-Authorization');
+            $authorizationHeader = $request->getHeader("X-Authorization");
 
 //             Prepare database item. If table empty, then create new item.
-            $mainItemCollection = Mage::getModel('businessfactory_roihuntereasy/main')->getCollection();
+            $mainItemCollection = Mage::getModel("businessfactory_roihuntereasy/main")->getCollection();
             if ($mainItemCollection->count() <= 0) {
-                $dataEntity = Mage::getModel('businessfactory_roihuntereasy/main');
+                $dataEntity = Mage::getModel("businessfactory_roihuntereasy/main");
                 $dataEntity->setDescription("New");
             } else {
-                $dataEntity = Mage::getModel('businessfactory_roihuntereasy/main')->load($mainItemCollection->getLastItem()->getId());
+                $dataEntity = Mage::getModel("businessfactory_roihuntereasy/main")->load($mainItemCollection->getLastItem()->getId());
                 $dataEntity->setDescription("Updated");
 
 //                    If data already exist check for client token.
@@ -387,7 +387,7 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
 
             // Save clientToken only if not exist
             if ($dataEntity->getClientToken() == NULL) {
-                $client_token = $request->getParam('client_token');
+                $client_token = $request->getParam("client_token");
                 if ($client_token == NULL) {
                     $response->setBody(json_encode("Missing client token"));
                     $response->setHttpResponseCode(422);
@@ -399,7 +399,7 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
 
             // Save AccessToken only if not exist
             if ($dataEntity->getAccessToken() == NULL) {
-                $goostav_access_token = $request->getParam('access_token');
+                $goostav_access_token = $request->getParam("access_token");
                 if ($goostav_access_token == NULL) {
                     $response->setBody(json_encode("Missing tokens"));
                     $response->setHttpResponseCode(422);
@@ -411,32 +411,34 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
 
 
             // Save status and errors if something failed
-            $status = $request->getParam('status');
+            $status = $request->getParam("status");
             if ($status != NULL) $dataEntity->setStatus($status);
-            $errors = $request->getParam('errors');
+            $errors = $request->getParam("errors");
             if ($errors != NULL) $dataEntity->setErrors($errors);
 
 
             // Save customer id
-            $customerId = $request->getParam('id');
+            $customerId = $request->getParam("id");
             if ($customerId != NULL) $dataEntity->setCustomerId($customerId);
             // Save conversion id
-            $conversionId = $request->getParam('conversion_id');
+            $conversionId = $request->getParam("conversion_id");
             if ($conversionId != NULL) $dataEntity->setConversionId($conversionId);
 
             // Set managed merchants
-            $managedMerchants = $request->getParam('managed_merchants');
-            if ($managedMerchants !== NULL) $dataEntity->setManagedMerchants($managedMerchants === 'true');
+            $managedMerchants = $request->getParam("managed_merchants");
+            if ($managedMerchants !== NULL) $dataEntity->setManagedMerchants($managedMerchants === "true");
             // Set adult content
-            $adultOriented = $request->getParam('adult_oriented');
-            if ($adultOriented !== NULL) $dataEntity->setAdultOriented($adultOriented === 'true');
-
+            $adultOriented = $request->getParam("adult_oriented");
+            if ($adultOriented !== NULL) $dataEntity->setAdultOriented($adultOriented === "true");
+            // Set conversion label
+            $conversionLabel = $request->getParam("conversion_label");
+            if ($conversionLabel !== NULL) $dataEntity->setConversionLabel($conversionLabel);
 
             // Persist data
             $dataEntity->save();
 
             // Create verification file
-            $filename = $request->getParam('site_verification_token');
+            $filename = $request->getParam("site_verification_token");
             $this->createVerificationFile($filename);
 
             // Return response
@@ -444,9 +446,9 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
                 "data" => $requestData
             )));
         } catch (Exception $exception) {
-            Mage::log(__METHOD__ . " exception.", null, 'errors.log');
-            Mage::log($exception, null, 'errors.log');
-            Mage::log($request, null, 'errors.log');
+            Mage::log(__METHOD__ . " exception.", null, "errors.log");
+            Mage::log($exception, null, "errors.log");
+            Mage::log($request, null, "errors.log");
             $response->setHttpResponseCode(500);
         }
     }
@@ -463,7 +465,7 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
                 // Apache
                 $io = new Varien_Io_File();
                 $io->setAllowCreateFolders(true);
-                $io->open(array('path' => Mage::getBaseDir()));
+                $io->open(array("path" => Mage::getBaseDir()));
 
                 if ($io->fileExists($filename)) {
                     $io->rm($filename);
@@ -476,11 +478,11 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
                 // Nginx - check if it is necessary to create file in public folder
 
             } else {
-                Mage::log('ERROR: Cannot create verification file. Missing filename', null, 'errors.log');
+                Mage::log("ERROR: Cannot create verification file. Missing filename", null, "errors.log");
             }
         } catch (Exception $exception) {
-            Mage::log(__METHOD__ . " exception.", null, 'errors.log');
-            Mage::log($exception, null, 'errors.log');
+            Mage::log(__METHOD__ . " exception.", null, "errors.log");
+            Mage::log($exception, null, "errors.log");
         }
     }
 }
