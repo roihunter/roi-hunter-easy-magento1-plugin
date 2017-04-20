@@ -13,6 +13,29 @@ class Businessfactory_Roihuntereasy_Block_Adminhtml_Admin extends Mage_Adminhtml
         return Mage::getIsDeveloperMode() ? "developer" : "production";
     }
 
+    public function isStagingActive()
+    {
+        $filename = "roi_hunter_staging_active";
+        $io = new Varien_Io_File();
+        $io->open(array("path" => Mage::getBaseDir()));
+        if ($io->fileExists($filename)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public function getIframeBaseUrl()
+    {
+        if ($this->isStagingActive()) {
+            return "//goostav-fe-staging.roihunter.com/";
+        }
+        else {
+            return "//magento.roihunter.com/";
+        }
+    }
+
     public function getDefaultStoreId()
     {
         return Mage::app()

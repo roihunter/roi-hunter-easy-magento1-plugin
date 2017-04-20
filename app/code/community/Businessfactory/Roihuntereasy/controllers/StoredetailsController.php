@@ -8,6 +8,14 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
         $this->renderLayout();
     }
 
+    protected function setResponseHeaders(& $response) {
+        $response->setHeader("Content-type", "application/json");
+        $response->setHeader("Access-Control-Allow-Origin", "*", true);
+        $response->setHeader("Access-Control-Allow-Methods", "OPTIONS,GET,POST", true);
+        $response->setHeader("Access-Control-Max-Age", "60", true);
+        $response->setHeader("Access-Control-Allow-Headers", "X-Authorization", true);
+    }
+
     /**
      * http://store.com/roihuntereasy/storedetails/check
      */
@@ -15,14 +23,8 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
     {
         Mage::log(__METHOD__ . "- Check called.");
 
-        $request = $this->getRequest();
         $response = $this->getResponse();
-
-        $response->setHeader("Content-type", "application/json");
-        $response->setHeader("Access-Control-Allow-Origin", "*", true);
-        $response->setHeader("Access-Control-Allow-Methods", "OPTIONS,GET,POST", true);
-        $response->setHeader("Access-Control-Max-Age", "60", true);
-        $response->setHeader("Access-Control-Allow-Headers", "X-Authorization", true);
+        $this->setResponseHeaders($response);
 
         $response->setBody(json_encode("rh-easy-active."));
     }
@@ -36,12 +38,7 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
 
         $request = $this->getRequest();
         $response = $this->getResponse();
-
-        $response->setHeader("Content-type", "application/json");
-        $response->setHeader("Access-Control-Allow-Origin", "*", true);
-        $response->setHeader("Access-Control-Allow-Methods", "OPTIONS,GET,POST", true);
-        $response->setHeader("Access-Control-Max-Age", "60", true);
-        $response->setHeader("Access-Control-Allow-Headers", "X-Authorization", true);
+        $this->setResponseHeaders($response);
 
         if ($request->getMethod() === "GET") {
             $this->processDebugGET();
@@ -96,12 +93,7 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
 
         $request = $this->getRequest();
         $response = $this->getResponse();
-
-        $response->setHeader("Content-type", "application/json");
-        $response->setHeader("Access-Control-Allow-Origin", "*", true);
-        $response->setHeader("Access-Control-Allow-Methods", "OPTIONS,GET,POST", true);
-        $response->setHeader("Access-Control-Max-Age", "60", true);
-        $response->setHeader("Access-Control-Allow-Headers", "X-Authorization", true);
+        $this->setResponseHeaders($response);
 
         if ($request->getMethod() === "GET") {
             $this->processLogsGET();
@@ -174,7 +166,7 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
 
             header("Content-Description: File Transfer");
             header("Content-Type: application/octet-stream");
-            header("Content-Disposition: attachment; filename="" . basename($zipAbsolutePath) .""");
+            header("Content-Disposition: attachment; filename='" . basename($zipAbsolutePath) ."'");
             header("Expires: 0");
             header("Cache-Control: must-revalidate");
             header("Pragma: public");
@@ -194,12 +186,7 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
     {
         $request = $this->getRequest();
         $response = $this->getResponse();
-
-        $response->setHeader("Content-type", "application/json");
-        $response->setHeader("Access-Control-Allow-Origin", "*", true);
-        $response->setHeader("Access-Control-Allow-Methods", "OPTIONS,GET,POST", true);
-        $response->setHeader("Access-Control-Max-Age", "60", true);
-        $response->setHeader("Access-Control-Allow-Headers", "X-Authorization", true);
+        $this->setResponseHeaders($response);
 
         if ($request->getMethod() === "GET") {
             $this->processStateGET();
@@ -298,12 +285,7 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
     {
         $request = $this->getRequest();
         $response = $this->getResponse();
-
-        $response->setHeader("Content-type", "application/json");
-        $response->setHeader("Access-Control-Allow-Origin", "*", true);
-        $response->setHeader("Access-Control-Allow-Methods", "OPTIONS,GET,POST", true);
-        $response->setHeader("Access-Control-Max-Age", "60", true);
-        $response->setHeader("Access-Control-Allow-Headers", "X-Authorization", true);
+        $this->setResponseHeaders($response);
 
         if ($request->getMethod() === "GET") {
             $this->processAddGET();

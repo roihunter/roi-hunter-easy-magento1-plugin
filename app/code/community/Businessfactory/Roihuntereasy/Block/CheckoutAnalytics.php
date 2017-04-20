@@ -17,7 +17,7 @@ class Businessfactory_Roihuntereasy_Block_CheckoutAnalytics extends Businessfact
                 $pagetype = $productRemarketing["pagetype"];
 
                 // render template with remarketing tag
-                if ($pagetype === "checkout" && $productRemarketing) {
+                if ($pagetype === "checkout") {
                     $this->prodId = $productRemarketing["id"];
                     $this->prodPrice = $productRemarketing["price"];
                     $this->conversionCurrency = $productRemarketing["currency"];
@@ -40,6 +40,7 @@ class Businessfactory_Roihuntereasy_Block_CheckoutAnalytics extends Businessfact
     {
         if (!$this->prodId) {
             Mage::log("Product ID not found during " . __METHOD__, null, "errors.log");
+            return null;
         }
         return json_encode($this->prodId);
     }
@@ -48,6 +49,7 @@ class Businessfactory_Roihuntereasy_Block_CheckoutAnalytics extends Businessfact
     {
         if (!$this->prodPrice) {
             Mage::log("Product price not found during " . __METHOD__, null, "errors.log");
+            return null;
         }
         return $this->prodPrice;
     }
@@ -62,12 +64,12 @@ class Businessfactory_Roihuntereasy_Block_CheckoutAnalytics extends Businessfact
                 return null;
             }
 
-            if (($conversionId = $mainItem->getConversionLabel()) == NULL) {
-                Mage::log("Conversion ID not found during " . __METHOD__, null, "errors.log");
+            if (($conversionLabel = $mainItem->getConversionLabel()) == NULL) {
+                Mage::log("Conversion label not found during " . __METHOD__, null, "errors.log");
                 return null;
             }
 
-            return $conversionId;
+            return $conversionLabel;
         } catch (Exception $exception) {
             Mage::log(__METHOD__ . " exception.", null, "errors.log");
             Mage::log($exception->getMessage(), null, "errors.log");

@@ -306,7 +306,8 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
             ->getDefaultStoreView()
             ->getStoreId();
         $collection->setStoreId($storeId);
-        $collection->addWebsiteFilter();
+        // adding website filter removes products unavailable in the store on the frontend
+        $collection->addStoreFilter($storeId);
         Mage::app()->setCurrentStore($storeId);
 
         $collection->load();
