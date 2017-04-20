@@ -16,6 +16,7 @@
         var creationState = "<?php echo($this->getMainItemEntry() ? $this->getMainItemEntry()->getCreationState() : null); ?>";
         var magentoMode = "<?php echo $this->getDevelopmentMode(); ?>";
         var pluginVersion = "magento_" + "<?php echo $this->getPluginVersion(); ?>";
+        var stagingActive = <?php echo json_encode($this->isStagingActive()); ?>;
 
         console.log("mode: " + magentoMode);
         console.log("baseUrl: " + storeUrl);
@@ -31,6 +32,7 @@
                         "storeCountry": storeCountry,
                         "storeMode": magentoMode,
                         "pluginVersion": pluginVersion,
+                        "stagingActive": stagingActive,
 
                         // Database part
                         "customerId": customerId,
@@ -63,7 +65,7 @@
 </script>
 
 <!--"http://localhost:3000"    "http://magento.roihunter.com/" -->
-<iframe src="//magento.roihunter.com/"
+<iframe src="<?php echo $this->getIframeBaseUrl(); ?>"
         id="RoiHunterEasyIFrame"
         scrolling="yes"
         frameBorder="0"

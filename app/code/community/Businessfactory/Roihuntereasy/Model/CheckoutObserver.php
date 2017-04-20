@@ -4,7 +4,7 @@ class Businessfactory_Roihuntereasy_Model_CheckoutObserver extends Mage_Core_Mod
 {
     public function _construct()
     {
-        $this->_init('roihuntereasy/roihuntereasy');
+        $this->_init("roihuntereasy/roihuntereasy");
     }
 
     public function setRemarketingTag(Varien_Event_Observer $observer)
@@ -17,39 +17,41 @@ class Businessfactory_Roihuntereasy_Model_CheckoutObserver extends Mage_Core_Mod
             }
 
             $conversionValue = 0;
+            $currency = null;
             $productIds = array();
             $configurableParentItems = array();
             $configurableChildItems = array();
 
-            $collection = Mage::getResourceModel('sales/order_collection')
-                ->addFieldToFilter('entity_id', array('in' => $orderIds));
+            $collection = Mage::getResourceModel("sales/order_collection")
+                ->addFieldToFilter("entity_id", array("in" => $orderIds));
 
             foreach ($collection as $order) {
                 $conversionValue += $order->getBaseGrandTotal();
+                $currency = $order->getStoreCurrencyCode();
 
                 // returns all order items
-                // configurable items are separated to two items - one simple with parent_item_id and one configurable with item_id
+                // configurable items are divided into two items - one simple with parent_item_id and one configurable with item_id
                 $items = $order->getAllItems();
                 foreach ($items as $item) {
-                    $parent_item_id = $item->getParentItemId();
-                    $product_type = $item->getProductType();
+                    $parentItemId = $item->getParentItemId();
+                    $productType = $item->getProductType();
                     
-                    if ($parent_item_id == null) {
+                    if ($parentItemId == null) {
                         // simple product - write directly to the result IDs array
-                        if ($product_type == "simple") {
+                        if ($productType == "simple") {
                             array_push($productIds, "mag_".$item->getProductId());
-                            Mage::log("Writing simple product", null, 'debug.log');
+                            Mage::log("Writing simple product", null, "debug.log");
                         }
                         // configurable parent product
-                        else if ($product_type == "configurable") {
+                        else if ($productType == "configurable") {
                             array_push($configurableParentItems, $item);
-                            Mage::log("Storing configurable parent product", null, 'debug.log');
+                            Mage::log("Storing configurable parent product", null, "debug.log");
                         }
                     }
                     // configurable child product
                     else {
                         array_push($configurableChildItems, $item);
-                        Mage::log("Storing configurable child product", null, 'debug.log');
+                        Mage::log("Storing configurable child product", null, "debug.log");
                     }
                 }
             }
@@ -57,10 +59,8 @@ class Businessfactory_Roihuntereasy_Model_CheckoutObserver extends Mage_Core_Mod
             // create map of parent IDS : parent objects
             $parentItemIdToProductIdMap = array();
             foreach ($configurableParentItems as $item) {
-                $parentItemIdToProductIdMap[$item['item_id']] = $item['product_id'];
+                $parentItemIdToProductIdMap[$item["item_id"]] = $item["product_id"];
             }
-
-            Mage::log("Configurable parent products map: %s" % ($parentItemIdToProductIdMap), null, 'debug.log');
 
             // iterate over children items a find parent item in the map
             foreach ($configurableChildItems as $item) {
@@ -69,21 +69,25 @@ class Businessfactory_Roihuntereasy_Model_CheckoutObserver extends Mage_Core_Mod
             }
 
             // create Google Adwords data
-            $checkout_remarketing_data = array(
-                'pagetype' => 'checkout',
-                'id' => $productIds,
-                'price' => $conversionValue
+            $checkoutRemarketingData = array(
+                "pagetype" => "checkout",
+                "id" => $productIds,
+                "price" => $conversionValue,
+                "currency" => $currency
             );
-            $checkout_remarketing_json = json_encode($checkout_remarketing_data);
-            $checkout_remarketing_base64 = base64_encode($checkout_remarketing_json);
+
+            Mage::log("Setting temporary customer session value: ".json_encode($checkoutRemarketingData), null, "debug.log");
+
+            $checkoutRemarketingJson = json_encode($checkoutRemarketingData);
+            $checkout_RemarketingBase64 = base64_encode($checkoutRemarketingJson);
 
             // set session
-            Mage::getSingleton('customer/session')->setMyValue($checkout_remarketing_base64);
+            Mage::getSingleton("customer/session")->setMyValue($checkout_RemarketingBase64);
 
             return $this;
         } catch (Exception $exception) {
-            Mage::log(__METHOD__ . " exception.", null, 'errors.log');
-            Mage::log($exception, null, 'errors.log');
+            Mage::log(__METHOD__ . " exception.", null, "errors.log");
+            Mage::log($exception, null, "errors.log");
         }
     }
 }

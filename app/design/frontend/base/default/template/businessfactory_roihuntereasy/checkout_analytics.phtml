@@ -3,6 +3,8 @@
 $_prodSku = $this->getProdId();
 $_prodPrice = $this->getProdPrice();
 $_conversionId = $this->getConversionId();
+$_conversionLabel = $this->getConversionLabel();
+$_currency = $this->getConversionCurrency();
 
 ?>
 
@@ -15,7 +17,7 @@ Remarketing tags may not be associated with personally identifiable information 
     var google_conversion_id = <?php echo $_conversionId ?>;
     var google_custom_params = {
         ecomm_prodid: <?php echo $_prodSku ?>,
-        ecomm_pagetype: 'purchase',
+        ecomm_pagetype: "purchase",
         ecomm_totalvalue: <?php echo $_prodPrice ?>,
     };
     var google_remarketing_only = true;
@@ -36,7 +38,9 @@ Remarketing tags may not be associated with personally identifiable information 
     var google_conversion_language = "en_US";
     var google_conversion_format = "1";
     var google_conversion_color = "666666";
-    var google_remarketing_only = true;
+    var google_conversion_label = "<?php echo $_conversionLabel ?>";
+    var google_conversion_currency = "<?php echo $_currency ?>";
+    var google_remarketing_only = false;
     var google_conversion_value = <?php echo $_prodPrice ?>;
     /* ]]> */
 </script>
@@ -44,5 +48,5 @@ Remarketing tags may not be associated with personally identifiable information 
 </script>
 <noscript>
     <img height=1 width=1 border=0 src="//www.googleadservices.com/pagead/
-		conversion/<?php echo $_conversionId ?>/?value=<?php echo $_prodPrice ?>&amp;guid=ON&amp;script=0">
+		conversion/<?php echo $_conversionId ?>/?value=<?php echo $_prodPrice ?>&amp;currency_code=<?php echo $_currency ?>&amp;label=<?php echo $_conversionLabel ?>&amp;guid=ON&amp;script=0">
 </noscript>

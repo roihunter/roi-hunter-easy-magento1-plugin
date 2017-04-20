@@ -219,8 +219,8 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         $limitEnabled = false;
         $simpleProductsCount = 0;
         $configurableProductsCount = 0;
-        $simpleProductsLimit = 2;
-        $configurableProductsLimit = 1;
+        $simpleProductsLimit = 1;
+        $configurableProductsLimit = 0;
 
         $xmlWriter = new XMLWriter();
         $xmlWriter->openMemory();
@@ -306,6 +306,8 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
             ->getDefaultStoreView()
             ->getStoreId();
         $collection->setStoreId($storeId);
+        // adding website filter removes products unavailable in the store on the frontend
+        $collection->addStoreFilter($storeId);
         Mage::app()->setCurrentStore($storeId);
 
         $collection->load();
@@ -331,7 +333,7 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
 
             // ID belongs to the child product"s ID to make this product unique
             $xmlWriter->writeElement("g:id", $this->getId($_product, $_childproduct));
-            $xmlWriter->writeElement("g:item_group_id", $this->getItemGroupId($_product, $_childproduct));
+            $xmlWriter->writeElement("g:item_group_id", $this->getItemGroupId($_product));
             $xmlWriter->writeElement("g:display_ads_id", $this->getDisplayAdsId($_product, $_childproduct));
 
             // process common attributes
@@ -486,7 +488,7 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
      */
     function getSalePrice($product, $withCurrency=false)
     {
-        $price =  $product->getSpecialPrice();
+        $price = $product->getFinalPrice();
 
         if ($price && $withCurrency) {
             $price = $price." ".$this->getCurrency();
@@ -575,9 +577,18 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
      */
     function getImageUrl($product)
     {
-        $productMediaConfig = Mage::getModel("catalog/product_media_config");
-        $baseImageUrl = $productMediaConfig->getMediaUrl($product->getImage());
+        $imageUrl = null;
 
-        return $baseImageUrl;
+        // try to retrieve base image URL
+        if ($product->getImage() != "no_selection" && $product->getImage()){
+            $productMediaConfig = Mage::getModel("catalog/product_media_config");
+            $imageUrl = $productMediaConfig->getMediaUrl($product->getImage());
+        }
+        // retrieve cached image URL
+        else {
+            $imageUrl = Mage::helper("catalog/image")->init($product, "image");
+        }
+
+        return $imageUrl;
     }
 }
