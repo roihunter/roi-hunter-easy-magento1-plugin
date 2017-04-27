@@ -148,7 +148,7 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         foreach ($products as $_product) {
             switch ($_product->getTypeId()) {
                 case "downloadable":
-                    if ($_product->getPrice() <= 0) {
+                    if ($this->getPrice($_product) <= 0) {
                         break;
                     }
 //              Else same processing as simple product
@@ -183,10 +183,10 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
                 "ID" => $this->getId($_product, $_childproduct),
                 "Item title" => $this->getTitle($_product),
                 "Final URL" => $this->getProductUrl($_product),
-                "Image URL" => $this->getImageUrl($_childproduct),
+                "Image URL" => $this->getImageUrl($_product),
                 "Item description" => $this->getDescription($_product),
-                "Price" => $this->getPrice($_childproduct, true),
-                "Sale price" => $this->getSalePrice($_childproduct, true),
+                "Price" => $this->getPrice($_product, true),
+                "Sale price" => $this->getSalePrice($_product, true),
             );
             array_push($productArray, $productDict);
         }
@@ -234,6 +234,7 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         $xmlWriter->writeElement("title", "ROI Hunter Easy - Magento data feed");
         $xmlWriter->writeElement("description", "Magento data feed used in Google Merchants");
         $xmlWriter->writeElement("link", Mage::app()->getStore()->getBaseUrl());
+        $xmlWriter->writeElement('date', Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s'));
 
         $this->count = 0;
         foreach ($products as $_product) {
@@ -286,6 +287,8 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         $collection->addAttributeToSelect("short_description");
         $collection->addAttributeToSelect("description");
         $collection->addAttributeToSelect("price");
+        $collection->addAttributeToSelect("final_price");
+        $collection->addAttributeToSelect("minimal_price");
         $collection->addAttributeToSelect("special_price");
         $collection->addAttributeToSelect("size");
         $collection->addAttributeToSelect("color");
@@ -389,6 +392,15 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         }
 
         $xmlWriter->writeElement("g:condition", "new");
+        // get sale price from the parent product in case that the special price is set on the configurable product
+        // but not on the children
+        // TODO: possible improvement: check children simple product first
+        $xmlWriter->writeElement("g:price", $this->getPrice($_product));
+        $xmlWriter->writeElement("g:sale_price", $this->getSalePrice($_product));
+        // get image URL from the parent product in case that the image is set on the configurable product
+        // but not on the children simple product
+        // TODO: possible improvement: check children simple product first
+        $xmlWriter->writeElement("g:image_link", $this->getImageUrl($_product));
     }
 
     /**
@@ -397,16 +409,12 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
      */
     function writeChildProductAttributesXML($_product, $xmlWriter)
     {
-        $xmlWriter->writeElement("g:image_link", $this->getImageUrl($_product));
-
 //        $this->_logger->debug("gtin: " . $_product->getEan());
         $xmlWriter->writeElement("g:mpn", $_product->getSku());
         if (strlen($_product->getEan()) > 7) {
             $xmlWriter->writeElement("g:gtin", $_product->getEan());
         }
 
-        $xmlWriter->writeElement("g:price", $this->getPrice($_product));
-        $xmlWriter->writeElement("g:sale_price", $this->getSalePrice($_product));
         // replaced getAttributeText with safer option
         $attributeCode = "color";
         if ($_product->getData($attributeCode) !== null){
@@ -583,10 +591,6 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         if ($product->getImage() != "no_selection" && $product->getImage()){
             $productMediaConfig = Mage::getModel("catalog/product_media_config");
             $imageUrl = $productMediaConfig->getMediaUrl($product->getImage());
-        }
-        // retrieve cached image URL
-        else {
-            $imageUrl = Mage::helper("catalog/image")->init($product, "image");
         }
 
         return $imageUrl;
