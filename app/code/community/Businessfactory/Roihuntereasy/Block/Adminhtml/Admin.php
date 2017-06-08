@@ -73,13 +73,13 @@ class Businessfactory_Roihuntereasy_Block_Adminhtml_Admin extends Mage_Adminhtml
     public function getStoreLanguage()
     {
         // http://stackoverflow.com/questions/6579287/magento-get-language-code-in-template-file
-        $locale = explode("_", Mage::app()->getLocale()->getLocaleCode());
+        $locale = explode("_", Mage::getStoreConfig('general/locale/code', $this->getDefaultStoreId()));
         return $locale[0];
     }
 
     public function getStoreCountry()
     {
-        $locale = explode("_", Mage::app()->getLocale()->getLocaleCode());
+        $locale = explode("_", Mage::getStoreConfig('general/locale/code', $this->getDefaultStoreId()));
         if (is_array($locale) && count($locale) > 1) {
             return $locale[1];
         } else {
