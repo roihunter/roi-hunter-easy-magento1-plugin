@@ -47,9 +47,10 @@ There are two ways how to install the extension through Magento Connect Manager:
 
 ### Direct package file upload
 1) Download the latest package file in the [Releases tab](https://github.com/business-factory/roi-hunter-easy-magento1-plugin/releases).
-![Releases.png](https://easy.roihunter.com/img/releases.png)
+![Releases.png](https://s4.postimg.org/tlx0kled9/releases.png)
+
 2) Go to Magento Connect Manager in your Magento shop administration, select package file from your computer and then click to _Upload_.
-![Upload.jpg](https://easy.roihunter.com/img/upload.jpg)
+![Upload.jpg](https://s4.postimg.org/sxo61nfnh/upload.jpg)
 
 ### Magento Connect extension key 
 The second way is to install package from Magento Connect by insert extension key to yout Magento Connect Manager.
@@ -57,10 +58,10 @@ The second way is to install package from Magento Connect by insert extension ke
 1) Go to [Magento Connect](https://www.magentocommerce.com/magento-connect/roi-hunter-easy.html) ROI Hunter Easy extension page. 
 2) Click to _Install_ button and get the extension key.
 3) Paste extension key to Magento Connect Manager in your Magento shop administration and click to _Install_.
-![connect.jpg](https://easy.roihunter.com/img/connect.jpg)
+![connect.jpg](https://s4.postimg.org/vy50i6qyl/connect.jpg)
 
 You can see installation procedure information like this in the Magento Connect Manager console:
-![console.jpg](https://easy.roihunter.com/img/console.jpg)
+![console.jpg](https://s4.postimg.org/v9w5z8s8t/console.jpg)
 
 ## Magento Marketplace
 
@@ -69,7 +70,7 @@ If you are familiar with Magento Marketplace platform, you can install our plugi
 ## Check your installation
 After sucessfull installation you can see new _ROI Hunter Easy_ item in Main menu of your Magento store administration.
 
-![menu.jpg](https://easy.roihunter.com/img/menu.jpg)
+![menu.jpg](https://s4.postimg.org/il1vfkm4d/menu.jpg)
 
 After installation continue by click to _ROI Hunter Easy_ menu item and follow the instructions in our Sign Up wizard.
 
