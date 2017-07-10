@@ -55,12 +55,15 @@ There are two ways how to install the extension through Magento Connect Manager:
 ### Magento Connect extension key 
 The second way is to install package from Magento Connect by insert extension key to yout Magento Connect Manager.
 
-1) Go to [Magento Connect](https://www.magentocommerce.com/magento-connect/roi-hunter-easy.html) ROI Hunter Easy extension page. 
-2) Click to _Install_ button and get the extension key.
+1) Go to [Magento Connect](https://www.magentocommerce.com/magento-connect/roi-hunter-easy.html) ROI Hunter Easy extension page and place an order by clicking Add to Card -> Checkout -> Place Order.
+![addtocard.png](https://s22.postimg.org/y7hk0lblt/addtocard.png)
+2) After placing order click to _Install_ button and get the extension key.
+![install.png](https://s22.postimg.org/fgfmqfh1d/install.png)
+![key.png](https://s3.postimg.org/ntr6a6ag3/key.png)
 3) Paste extension key to Magento Connect Manager in your Magento shop administration and click to _Install_.
 ![connect.jpg](https://s4.postimg.org/vy50i6qyl/connect.jpg)
 
-You can see installation procedure information like this in the Magento Connect Manager console:
+After this steps you are at the end. By clicking Upload/Install you can see installation procedure information like this in the Magento Connect Manager console:
 ![console.jpg](https://s4.postimg.org/v9w5z8s8t/console.jpg)
 
 ## Magento Marketplace
