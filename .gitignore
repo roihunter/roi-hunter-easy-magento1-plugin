@@ -4,8 +4,8 @@
 # But not these files...
 !.gitignore
 !README.md
-!app/code/community/Businessfactory/Roihuntereasy
-!app/code/community/Businessfactory/Roihuntereasy/sql
+!app/code/community/Businessfactory/Roihuntereasy/**/
+!app/code/community/Businessfactory/Roihuntereasy/**
 !app/design/adminhtml/default/default/layout/businessfactory_roihuntereasy.xml
 !app/design/adminhtml/default/default/template/businessfactory_roihuntereasy
 !app/design/frontend/base/default/layout/businessfactory_roihuntereasy.xml
@@ -14,4 +14,4 @@
 # etc...
 
 # ...even if they are in subdirectories
-!*/
+
