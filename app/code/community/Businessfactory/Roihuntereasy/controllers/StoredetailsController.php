@@ -89,7 +89,7 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
      */
     public function logsAction()
     {
-        Mage::log(__METHOD__ . "- Debug called.", "debug.log");
+        Mage::log(__METHOD__ . "- Debug called.", null, "debug.log");
 
         $request = $this->getRequest();
         $response = $this->getResponse();
