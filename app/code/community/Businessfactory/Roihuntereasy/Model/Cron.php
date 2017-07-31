@@ -138,7 +138,9 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
             "Image URL",
             "Item description",
             "Price",
-            "Sale price"
+            "Sale price",
+            "Formatted price",
+            "Formatted sale price"
         );
 
         // write headers to CSV file
@@ -187,6 +189,8 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
                 "Item description" => $this->getDescription($_product),
                 "Price" => $this->getPrice($_product, true),
                 "Sale price" => $this->getSalePrice($_product, true),
+                "Formatted price" => $this->getFormattedPrice($_product),
+                "Formatted sale price" => $this->getFormattedSalePrice($_product),
             );
             array_push($productArray, $productDict);
         }
@@ -207,6 +211,8 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
             "Item description" => $this->getDescription($_product),
             "Price" => $this->getPrice($_product, true),
             "Sale price" => $this->getSalePrice($_product, true),
+            "Formatted price" => $this->getFormattedPrice($_product),
+            "Formatted sale price" => $this->getFormattedSalePrice($_product),
         );
         return $productDict;
     }
@@ -295,6 +301,16 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         $collection->addAttributeToSelect("pattern");
         $collection->addAttributeToSelect("image");
 
+        // Forced EAV tables to join in case Flat table is enabled
+        $collection->joinAttribute('image', 'catalog_product/image', 'entity_id', null, 'left');
+        $collection->joinAttribute('price', 'catalog_product/price', 'entity_id', null, 'left');
+        $collection->joinAttribute('final_price', 'catalog_product/price', 'entity_id', null, 'left');
+        $collection->joinAttribute('minimal_price', 'catalog_product/price', 'entity_id', null, 'left');
+        $collection->joinAttribute('special_price', 'catalog_product/price', 'entity_id', null, 'left');
+        $collection->joinAttribute('name', 'catalog_product/name', 'entity_id', null, 'left');
+        $collection->joinAttribute('description', 'catalog_product/description', 'entity_id', null, 'left');
+        //$collection->getSelect()->limit(20);
+
         // Allow only visible products
         $visibility = array(
             Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
@@ -308,16 +324,20 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         $storeId = Mage::app()
             ->getDefaultStoreView()
             ->getStoreId();
+
+        $storeObject = Mage::getModel('core/store')->load($storeId);
+
         $collection->setStoreId($storeId);
         // adding website filter removes products unavailable in the store on the frontend
         $collection->addStoreFilter($storeId);
-        Mage::app()->setCurrentStore($storeId);
+        Mage::app()->setCurrentStore($storeObject);
 
         $collection->load();
 
         Mage::log("Default store ID: " . $storeId, null, "cron.log");
 
         return $collection;
+
     }
 
     /**
@@ -518,6 +538,28 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         }
 
         return $price;
+    }
+
+    /**
+     * @param Mixed $product
+     * @return string formatted price
+     */
+    function getFormattedPrice($product)
+    {
+        $formatted_price = Mage::helper('core')->currency($product->getPrice(), true, false);
+
+        return $formatted_price;
+    }
+
+    /**
+     * @param Mixed $product
+     * @return string formatted price
+     */
+    function getFormattedSalePrice($product)
+    {
+        $formatted_final_price = Mage::helper('core')->currency($product->getFinalPrice(), true, false);
+
+        return $formatted_final_price;
     }
 
     /**
