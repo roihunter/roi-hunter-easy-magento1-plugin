@@ -295,6 +295,15 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         $collection->addAttributeToSelect("pattern");
         $collection->addAttributeToSelect("image");
 
+        // Forced EAV tables to join in case Flat table is enabled
+        $collection->joinAttribute('image', 'catalog_product/image', 'entity_id', null, 'left');
+        $collection->joinAttribute('price', 'catalog_product/price', 'entity_id', null, 'left');
+        $collection->joinAttribute('final_price', 'catalog_product/price', 'entity_id', null, 'left');
+        $collection->joinAttribute('minimal_price', 'catalog_product/price', 'entity_id', null, 'left');
+        $collection->joinAttribute('special_price', 'catalog_product/price', 'entity_id', null, 'left');
+        $collection->joinAttribute('name', 'catalog_product/name', 'entity_id', null, 'left');
+        $collection->joinAttribute('description', 'catalog_product/description', 'entity_id', null, 'left');
+
         // Allow only visible products
         $visibility = array(
             Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
@@ -308,16 +317,20 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         $storeId = Mage::app()
             ->getDefaultStoreView()
             ->getStoreId();
+
+        $storeObject = Mage::getModel('core/store')->load($storeId);
+
         $collection->setStoreId($storeId);
         // adding website filter removes products unavailable in the store on the frontend
         $collection->addStoreFilter($storeId);
-        Mage::app()->setCurrentStore($storeId);
+        Mage::app()->setCurrentStore($storeObject);
 
         $collection->load();
 
         Mage::log("Default store ID: " . $storeId, null, "cron.log");
 
         return $collection;
+
     }
 
     /**
