@@ -309,7 +309,6 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         $collection->joinAttribute('special_price', 'catalog_product/price', 'entity_id', null, 'left');
         $collection->joinAttribute('name', 'catalog_product/name', 'entity_id', null, 'left');
         $collection->joinAttribute('description', 'catalog_product/description', 'entity_id', null, 'left');
-        //$collection->getSelect()->limit(20);
 
         // Allow only visible products
         $visibility = array(
