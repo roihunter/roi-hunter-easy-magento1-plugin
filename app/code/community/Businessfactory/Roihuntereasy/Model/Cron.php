@@ -335,6 +335,14 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
 
         Mage::log("Default store ID: " . $storeId, null, "cron.log");
 
+        $test_object = Mage::getModel('catalog/product')->load(390); // Diffuser
+        Mage::log("Test Object: ", null, "cron.log");
+        Mage::log($test_object, null, "cron.log");
+        $test_price = $test_object->getPrice();
+        Mage::log("Price: " . $test_price, null, "cron.log");
+        $test_final_price = $test_object->getPrice();
+        Mage::log("Special price: " . $test_final_price, null, "cron.log");
+
         return $collection;
 
     }
