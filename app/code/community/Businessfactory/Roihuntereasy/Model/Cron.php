@@ -303,12 +303,6 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
 
         // Forced EAV tables to join in case Flat table is enabled
         $collection->joinAttribute('image', 'catalog_product/image', 'entity_id', null, 'left');
-        $collection->joinAttribute('price', 'catalog_product/price', 'entity_id', null, 'left');
-        $collection->joinAttribute('final_price', 'catalog_product/price', 'entity_id', null, 'left');
-        $collection->joinAttribute('minimal_price', 'catalog_product/price', 'entity_id', null, 'left');
-        $collection->joinAttribute('special_price', 'catalog_product/price', 'entity_id', null, 'left');
-        $collection->joinAttribute('name', 'catalog_product/name', 'entity_id', null, 'left');
-        $collection->joinAttribute('description', 'catalog_product/description', 'entity_id', null, 'left');
 
         // Allow only visible products
         $visibility = array(
@@ -334,16 +328,6 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         $collection->load();
 
         Mage::log("Default store ID: " . $storeId, null, "cron.log");
-
-        $test_object = Mage::getModel('catalog/product')->load(390); // Diffuser
-        Mage::log("Test Object: ", null, "cron.log");
-        Mage::log($test_object, null, "cron.log");
-        $test_price = $test_object->getPrice();
-        Mage::log("Get Price: " . $test_price, null, "cron.log");
-        $test_final_price = $test_object->getPrice();
-        Mage::log("Get Final price: " . $test_final_price, null, "cron.log");
-        $test_special_price = $test_object['special_price'];
-        Mage::log("Property Special price: " . $test_special_price, null, "cron.log");
 
         return $collection;
 
