@@ -339,9 +339,11 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         Mage::log("Test Object: ", null, "cron.log");
         Mage::log($test_object, null, "cron.log");
         $test_price = $test_object->getPrice();
-        Mage::log("Price: " . $test_price, null, "cron.log");
+        Mage::log("Get Price: " . $test_price, null, "cron.log");
         $test_final_price = $test_object->getPrice();
-        Mage::log("Special price: " . $test_final_price, null, "cron.log");
+        Mage::log("Get Final price: " . $test_final_price, null, "cron.log");
+        $test_special_price = $test_object['special_price'];
+        Mage::log("Property Special price: " . $test_special_price, null, "cron.log");
 
         return $collection;
 
