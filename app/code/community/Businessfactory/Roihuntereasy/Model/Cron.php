@@ -539,7 +539,7 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
      */
     function getFormattedPrice($product)
     {
-        $formatted_price = Mage::helper('core')->currency($product->getPrice(), true, false);
+        $formatted_price = Mage::helper('core')->currency($this->getPrice($product), true, false);
 
         return $formatted_price;
     }
@@ -550,7 +550,7 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
      */
     function getFormattedSalePrice($product)
     {
-        $formatted_final_price = Mage::helper('core')->currency($product->getFinalPrice(), true, false);
+        $formatted_final_price = Mage::helper('core')->currency($this->getSalePrice($product), true, false);
 
         return $formatted_final_price;
     }
