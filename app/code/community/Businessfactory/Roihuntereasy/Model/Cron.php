@@ -546,7 +546,7 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
 
     /**
      * @param Mixed $product
-     * @return string formatted price
+     * @return string formatted sale price
      */
     function getFormattedSalePrice($product)
     {
