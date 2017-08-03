@@ -611,7 +611,7 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         if (!$description) {
             $description = $product->getDescription();
         }
-        $description = strip_tags($description);
+        $description = str_replace( ' ', ' ', strip_tags( str_replace( '</', ' </',$description ) ) );
         return $description;
     }
 
