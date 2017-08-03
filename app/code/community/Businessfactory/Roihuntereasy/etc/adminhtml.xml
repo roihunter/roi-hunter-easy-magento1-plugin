@@ -3,7 +3,7 @@
     <menu>
         <businessfactory translate="title" module="businessfactory_roihuntereasy">
             <title>ROI Hunter Easy</title>
-            <sort_order>1</sort_order>
+            <sort_order>11</sort_order>
             <action>adminhtml/roihuntereasy/index</action>
         </businessfactory>
     </menu>
