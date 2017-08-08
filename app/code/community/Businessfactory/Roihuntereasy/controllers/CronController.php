@@ -4,16 +4,10 @@ class Businessfactory_Roihuntereasy_CronController extends Mage_Core_Controller_
 {
     protected $cron;
 
-    protected $supportedFileFormats;
-
     public function _construct()
     {
         parent::_construct();
         $this->cron = new Businessfactory_Roihuntereasy_Model_Cron();
-        $this->supportedFileFormats = array(
-            "xml",
-            "csv"
-        );
     }
 
     /**
@@ -45,7 +39,7 @@ class Businessfactory_Roihuntereasy_CronController extends Mage_Core_Controller_
                     return;
                 }
 
-                $resultCode = $this->generateSupportedFeeds();
+                $resultCode = $this->cron->generateSupportedFeeds();
                 if($resultCode == true){
                     $response->setBody(json_encode('Feeds generated.'));
                 } else {
@@ -115,7 +109,7 @@ class Businessfactory_Roihuntereasy_CronController extends Mage_Core_Controller_
                 }
 
                 // regenerate feeds
-                $resultCode = $this->generateSupportedFeeds();
+                $resultCode = $this->cron->generateSupportedFeeds();
                 if($resultCode == true){
                     $response->setBody(json_encode('Feeds generated.'));
                 } else {
@@ -134,15 +128,5 @@ class Businessfactory_Roihuntereasy_CronController extends Mage_Core_Controller_
             $response->setHttpResponseCode(400);
         }
     }
-
-    protected function generateSupportedFeeds() {
-        $resultCode = true;
-        foreach ($this->supportedFileFormats as $fileFormat) {
-            Mage::log("Cron generating started manually for file format: " . $fileFormat, null, 'cron.log');
-            $resultCode = $resultCode && $this->cron->createFeed($fileFormat);
-        }
-        return $resultCode;
-    }
-
 }
 

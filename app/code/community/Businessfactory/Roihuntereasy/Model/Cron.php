@@ -2,9 +2,16 @@
 
 class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
 {
+
+    protected $supportedFileFormats;
+
     public function _construct()
     {
         parent::_construct();
+        $this->supportedFileFormats = array(
+            "xml",
+            "csv"
+        );
     }
 
     /**
@@ -17,6 +24,15 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         $jobConfig = $jobsRoot->{$schedule->getJobCode()};
         $fileFormat = (string) $jobConfig->format;
         $this->createFeed($fileFormat);
+    }
+
+    public function generateSupportedFeeds() {
+        $resultCode = true;
+        foreach ($this->supportedFileFormats as $fileFormat) {
+            Mage::log("Cron generating started manually for file format: " . $fileFormat, null, 'cron.log');
+            $resultCode = $resultCode && $this->createFeed($fileFormat);
+        }
+        return $resultCode;
     }
 
     /**
