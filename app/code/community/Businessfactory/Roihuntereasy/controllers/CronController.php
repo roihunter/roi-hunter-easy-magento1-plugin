@@ -39,6 +39,7 @@ class Businessfactory_Roihuntereasy_CronController extends Mage_Core_Controller_
                     return;
                 }
 
+                Mage::log("Manual feeds generate from " .. __METHOD__, null, 'cron.log');
                 $resultCode = $this->cron->generateSupportedFeeds();
                 if($resultCode == true){
                     $response->setBody(json_encode('Feeds generated.'));
@@ -109,6 +110,7 @@ class Businessfactory_Roihuntereasy_CronController extends Mage_Core_Controller_
                 }
 
                 // regenerate feeds
+                Mage::log("Manual feeds generate from " .. __METHOD__, null, 'cron.log');
                 $resultCode = $this->cron->generateSupportedFeeds();
                 if($resultCode == true){
                     $response->setBody(json_encode('Feeds generated.'));
