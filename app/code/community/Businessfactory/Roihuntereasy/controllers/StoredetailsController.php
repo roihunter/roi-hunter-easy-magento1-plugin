@@ -377,6 +377,7 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
 
             // Generate feeds only in first callback
             if ($request->getParam("access_token") == NULL && $request->getParam("client_token") == NULL) {
+                Mage::log("First signup. Let's generate first feeds.", null, 'cron.log');
                 $this->cron->generateSupportedFeeds();
             }
 
