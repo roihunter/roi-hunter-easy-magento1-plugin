@@ -2,6 +2,14 @@
 
 class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Controller_Front_Action
 {
+    protected $cron;
+
+    public function _construct()
+    {
+        parent::_construct();
+        $this->cron = new Businessfactory_Roihuntereasy_Model_Cron();
+    }
+
     public function indexAction()
     {
         $this->loadLayout();
@@ -367,6 +375,12 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
                 }
             }
 
+            // Generate feeds only in first callback
+            if ($dataEntity->getClientToken() == NULL && $dataEntity->getAccessToken() {
+                Mage::log("First signup. Let's generate first feeds.", null, 'cron.log');
+                $this->cron->generateSupportedFeeds();
+            }
+
             // Save clientToken only if not exist
             if ($dataEntity->getClientToken() == NULL) {
                 $client_token = $request->getParam("client_token");
@@ -390,7 +404,6 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
                     $dataEntity->setAccessToken($goostav_access_token);
                 }
             }
-
 
             // Save status and errors if something failed
             $status = $request->getParam("status");
@@ -427,6 +440,7 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
             $response->setBody(json_encode(array(
                 "data" => $requestData
             )));
+
         } catch (Exception $exception) {
             Mage::log(__METHOD__ . " exception.", null, "errors.log");
             Mage::log($exception, null, "errors.log");
