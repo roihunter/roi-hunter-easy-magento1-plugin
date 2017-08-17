@@ -376,7 +376,7 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
             }
 
             // Generate feeds only in first callback
-            if ($request->getParam("access_token") == NULL && $request->getParam("client_token") == NULL) {
+            if ($dataEntity->getClientToken() == NULL && $dataEntity->getAccessToken() == NULL) {
                 $this->cron->generateSupportedFeeds();
             }
 
@@ -481,4 +481,3 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
         }
     }
 }
-
