@@ -26,6 +26,9 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         $this->createFeed($fileFormat);
     }
 
+    /**
+     * Method start new feed creation process from endpoint.
+     */
     public function generateSupportedFeeds() {
         $resultCode = true;
         foreach ($this->supportedFileFormats as $fileFormat) {
@@ -33,6 +36,38 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
             $resultCode = $resultCode && $this->createFeed($fileFormat);
         }
         return $resultCode;
+    }
+
+    /**
+     * Method start preview creation process from endpoint.
+     */
+    public function generatePreview($limit) {
+        $previewProducts = array();
+        Mage::log("Preview started: ", null, 'preview.log');
+
+        // get collection of all products
+        $products = $this->getProductCollection($limit);
+
+        // measurement variables
+        $totalTimeStart = microtime(true);
+        $timeStart = microtime(true);
+        $timeEnd = microtime(true);
+        $executionTime = ($timeEnd - $timeStart);
+        Mage::log("getProductCollection count: " . count($products) . ". Execution time: " . $executionTime, null, "preview.log");
+
+        try {
+            foreach ($products as $_product) {
+                $previewProducts['Products'][] = $this->writePreviewContent($_product);
+            }
+
+            $totalTimeEnd = microtime(true);
+            $totalExecutionTime = ($totalTimeEnd - $totalTimeStart);
+            Mage::log("total execution time: " . $totalExecutionTime, null, "preview.log");
+        } catch (Exception $e) {
+            Mage::throwException($e);
+        }
+
+        return $previewProducts;
     }
 
     /**
@@ -140,6 +175,19 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         $io->close();
 
         return true;
+    }
+
+    /**
+     * @param Mixed $products
+     */
+    private function writePreviewContent($product) {
+        $content = array();
+        $content['Title'] = $this->getTitle($product);
+        $content['Description'] = $this->getDescription($product);
+        $content['Price'] = $this->getFormattedSalePrice($product);
+        $content['ImageUrl'] = $this->getImageUrl($product);
+
+        return $content;
     }
 
     /**
@@ -300,7 +348,7 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         $io->streamWrite($xmlWriter->flush());
     }
 
-    public function getProductCollection()
+    public function getProductCollection($previewLimit=false)
     {
         $collection = Mage::getModel("catalog/product")->getCollection();
 
@@ -319,6 +367,13 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
 
         // Forced EAV tables to join in case Flat table is enabled
         $collection->joinAttribute('image', 'catalog_product/image', 'entity_id', null, 'left');
+
+        // Pick random product with limit by preview (default 3)
+        if ($previewLimit) {
+            $collection->setPageSize($previewLimit);
+            $collection->setCurPage(1);
+            $collection->getSelect()->order(new Zend_Db_Expr('RAND()'));
+        }
 
         // Allow only visible products
         $visibility = array(
@@ -346,7 +401,6 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         Mage::log("Default store ID: " . $storeId, null, "cron.log");
 
         return $collection;
-
     }
 
     /**
