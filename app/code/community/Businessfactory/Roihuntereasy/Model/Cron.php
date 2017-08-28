@@ -57,7 +57,7 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
 
         try {
             foreach ($products as $_product) {
-                $previewProducts['Products'][] = $this->writePreviewContent($_product);
+                $previewProducts['products'][] = $this->writePreviewContent($_product);
             }
 
             $totalTimeEnd = microtime(true);
@@ -182,10 +182,10 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
      */
     private function writePreviewContent($product) {
         $content = array();
-        $content['Title'] = $this->getTitle($product);
-        $content['Description'] = $this->getDescription($product);
-        $content['Price'] = $this->getFormattedSalePrice($product);
-        $content['ImageUrl'] = $this->getImageUrl($product);
+        $content['title'] = $this->getTitle($product);
+        $content['description'] = $this->getDescription($product);
+        $content['price'] = $this->getFormattedSalePrice($product);
+        $content['imageUrl'] = $this->getImageUrl($product);
 
         return $content;
     }
