@@ -251,8 +251,8 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
                 "Final URL" => $this->getProductUrl($_product),
                 "Image URL" => $this->getImageUrl($_product),
                 "Item description" => $this->getDescription($_product),
-                "Price" => $this->getPrice($_product),
-                "Sale price" => $this->getSalePrice($_product)
+                "Price" => $this->getPrice($_product, true),
+                "Sale price" => $this->getSalePrice($_product, true)
                 //"Formatted price" => $this->getFormattedPrice($_product),
                 //"Formatted sale price" => $this->getFormattedSalePrice($_product),
             );
@@ -273,8 +273,8 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
             "Final URL" => $this->getProductUrl($_product),
             "Image URL" => $this->getImageUrl($_product),
             "Item description" => $this->getDescription($_product),
-            "Price" => $this->getPrice($_product),
-            "Sale price" => $this->getSalePrice($_product)
+            "Price" => $this->getPrice($_product, true),
+            "Sale price" => $this->getSalePrice($_product, true)
             //"Formatted price" => $this->getFormattedPrice($_product),
             //"Formatted sale price" => $this->getFormattedSalePrice($_product),
         );
@@ -478,8 +478,8 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         // get sale price from the parent product in case that the special price is set on the configurable product
         // but not on the children
         // TODO: possible improvement: check children simple product first
-        $xmlWriter->writeElement("g:price", $this->getPrice($_product));
-        $xmlWriter->writeElement("g:sale_price", $this->getSalePrice($_product));
+        $xmlWriter->writeElement("g:price", $this->getPrice($_product, true));
+        $xmlWriter->writeElement("g:sale_price", $this->getSalePrice($_product, true));
         // get image URL from the parent product in case that the image is set on the configurable product
         // but not on the children simple product
         // TODO: possible improvement: check children simple product first
