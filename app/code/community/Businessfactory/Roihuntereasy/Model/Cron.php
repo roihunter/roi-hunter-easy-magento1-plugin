@@ -200,9 +200,9 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
             "Item title",
             "Final URL",
             "Image URL",
-            "Item description",
-            "Price",
-            "Sale price"
+            //"Item description",
+            "Price"
+            //"Sale price"
             //"Formatted price",
             //"Formatted sale price"
         );
@@ -214,7 +214,7 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         foreach ($products as $_product) {
             switch ($_product->getTypeId()) {
                 case "downloadable":
-                    if ($this->getPrice($_product) <= 0) {
+                    if ($this->getSalePrice($_product) <= 0) {
                         break;
                     }
 //              Else same processing as simple product
@@ -250,9 +250,9 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
                 "Item title" => $this->getTitle($_product),
                 "Final URL" => $this->getProductUrl($_product),
                 "Image URL" => $this->getImageUrl($_product),
-                "Item description" => $this->getDescription($_product),
-                "Price" => $this->getPrice($_product, true),
-                "Sale price" => $this->getSalePrice($_product, true)
+                //"Item description" => $this->getDescription($_product),
+                "Price" => $this->getSalePrice($_product, true)
+                //"Sale price" => $this->getSalePrice($_product, true)
                 //"Formatted price" => $this->getFormattedPrice($_product),
                 //"Formatted sale price" => $this->getFormattedSalePrice($_product),
             );
@@ -272,9 +272,9 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
             "Item title" => $this->getTitle($_product),
             "Final URL" => $this->getProductUrl($_product),
             "Image URL" => $this->getImageUrl($_product),
-            "Item description" => $this->getDescription($_product),
-            "Price" => $this->getPrice($_product, true),
-            "Sale price" => $this->getSalePrice($_product, true)
+            //"Item description" => $this->getDescription($_product),
+            "Price" => $this->getSalePrice($_product, true)
+            //"Sale price" => $this->getSalePrice($_product, true)
             //"Formatted price" => $this->getFormattedPrice($_product),
             //"Formatted sale price" => $this->getFormattedSalePrice($_product),
         );
@@ -311,7 +311,7 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
 
             switch ($_product->getTypeId()) {
                 case "downloadable":
-                    if ($_product->getPrice() <= 0) {
+                    if ($_product->getSalePrice() <= 0) {
                         break;
                     }
 //                        Else same processing as simple product
@@ -463,7 +463,7 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
     function writeParentProductAttributesXML($_product, $xmlWriter)
     {
         $xmlWriter->writeElement("g:title", $this->getTitle($_product));
-        $xmlWriter->writeElement("g:description", $this->getDescription($_product));
+        //$xmlWriter->writeElement("g:description", $this->getDescription($_product));
         // Product URL
         // $_product->getData("request_path") can return product handle like - aviator-sunglasses.html
         $xmlWriter->writeElement("g:link", $this->getProductUrl($_product));
@@ -478,8 +478,8 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         // get sale price from the parent product in case that the special price is set on the configurable product
         // but not on the children
         // TODO: possible improvement: check children simple product first
-        $xmlWriter->writeElement("g:price", $this->getPrice($_product, true));
-        $xmlWriter->writeElement("g:sale_price", $this->getSalePrice($_product, true));
+        $xmlWriter->writeElement("g:price", $this->getSalePrice($_product, true));
+        //$xmlWriter->writeElement("g:sale_price", $this->getSalePrice($_product, true));
         // get image URL from the parent product in case that the image is set on the configurable product
         // but not on the children simple product
         // TODO: possible improvement: check children simple product first
