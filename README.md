@@ -1,3 +1,5 @@
+## The ROI Hunter Easy project has been canceled and the support has ended. If you have any questions regarding your plugin, contact us at easy@roihunter.com.
+
 # Google Remarketing by ROI Hunter Easy
 
 [ROI Hunter Easy](http://easy.roihunter.com/) helps power your Magento 1.9 eshop with Google Remarketing. We know it's a pain to get dynamic remarketing up and running on Google – developers need to produce an xml feed in a certain format, you need to register it in Google Merchant, correct wrong product formats, link Merchant Center to Adwords, ask developers to put all codes to right places, set up audiences in Adwords, connect everything together, go through dozens of settings, etc. Time to stop! We are putting an end to this hassle. ROI Hunter Easy will take care of all the annoying tech settings so you can have professional remarketing campaigns in 3 simple steps:
