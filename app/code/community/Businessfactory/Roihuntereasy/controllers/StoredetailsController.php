@@ -391,7 +391,6 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
                 }
             }
 
-
             // Save status and errors if something failed
             $status = $request->getParam("status");
             if ($status != NULL) $dataEntity->setStatus($status);
@@ -468,4 +467,3 @@ class Businessfactory_Roihuntereasy_StoredetailsController extends Mage_Core_Con
         }
     }
 }
-

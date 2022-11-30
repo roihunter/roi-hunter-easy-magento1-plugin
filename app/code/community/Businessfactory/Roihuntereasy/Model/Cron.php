@@ -2,9 +2,16 @@
 
 class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
 {
+
+    protected $supportedFileFormats;
+
     public function _construct()
     {
         parent::_construct();
+        $this->supportedFileFormats = array(
+            "xml",
+            "csv"
+        );
     }
 
     /**
@@ -17,6 +24,50 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         $jobConfig = $jobsRoot->{$schedule->getJobCode()};
         $fileFormat = (string) $jobConfig->format;
         $this->createFeed($fileFormat);
+    }
+
+    /**
+     * Method start new feed creation process from endpoint.
+     */
+    public function generateSupportedFeeds() {
+        $resultCode = true;
+        foreach ($this->supportedFileFormats as $fileFormat) {
+            Mage::log("Cron generating started manually for file format: " . $fileFormat, null, 'cron.log');
+            $resultCode = $resultCode && $this->createFeed($fileFormat);
+        }
+        return $resultCode;
+    }
+
+    /**
+     * Method start preview creation process from endpoint.
+     */
+    public function generatePreview($limit) {
+        $previewProducts = array();
+        Mage::log("Preview started: ", null, 'preview.log');
+
+        // get collection of all products
+        $products = $this->getProductCollection($limit);
+
+        // measurement variables
+        $totalTimeStart = microtime(true);
+        $timeStart = microtime(true);
+        $timeEnd = microtime(true);
+        $executionTime = ($timeEnd - $timeStart);
+        Mage::log("getProductCollection count: " . count($products) . ". Execution time: " . $executionTime, null, "preview.log");
+
+        try {
+            foreach ($products as $_product) {
+                $previewProducts['products'][] = $this->writePreviewContent($_product);
+            }
+
+            $totalTimeEnd = microtime(true);
+            $totalExecutionTime = ($totalTimeEnd - $totalTimeStart);
+            Mage::log("total execution time: " . $totalExecutionTime, null, "preview.log");
+        } catch (Exception $e) {
+            Mage::throwException($e);
+        }
+
+        return $previewProducts;
     }
 
     /**
@@ -127,6 +178,19 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
     }
 
     /**
+     * @param Mixed $products
+     */
+    private function writePreviewContent($product) {
+        $content = array();
+        $content['title'] = $this->getTitle($product);
+        $content['description'] = $this->getDescription($product);
+        $content['price'] = $this->getFormattedSalePrice($product);
+        $content['imageUrl'] = $this->getImageUrl($product);
+
+        return $content;
+    }
+
+    /**
      * Feed generation function
      */
     private function generateAndSaveFeedCSV($products, $io) {
@@ -136,11 +200,11 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
             "Item title",
             "Final URL",
             "Image URL",
-            "Item description",
-            "Price",
-            "Sale price",
-            "Formatted price",
-            "Formatted sale price"
+            //"Item description",
+            "Price"
+            //"Sale price"
+            //"Formatted price",
+            //"Formatted sale price"
         );
 
         // write headers to CSV file
@@ -150,7 +214,7 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         foreach ($products as $_product) {
             switch ($_product->getTypeId()) {
                 case "downloadable":
-                    if ($this->getPrice($_product) <= 0) {
+                    if ($this->getSalePrice($_product) <= 0) {
                         break;
                     }
 //              Else same processing as simple product
@@ -186,11 +250,11 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
                 "Item title" => $this->getTitle($_product),
                 "Final URL" => $this->getProductUrl($_product),
                 "Image URL" => $this->getImageUrl($_product),
-                "Item description" => $this->getDescription($_product),
-                "Price" => $this->getPrice($_product, true),
-                "Sale price" => $this->getSalePrice($_product, true),
-                "Formatted price" => $this->getFormattedPrice($_product),
-                "Formatted sale price" => $this->getFormattedSalePrice($_product),
+                //"Item description" => $this->getDescription($_product),
+                "Price" => $this->getSalePrice($_product, true)
+                //"Sale price" => $this->getSalePrice($_product, true)
+                //"Formatted price" => $this->getFormattedPrice($_product),
+                //"Formatted sale price" => $this->getFormattedSalePrice($_product),
             );
             array_push($productArray, $productDict);
         }
@@ -208,11 +272,11 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
             "Item title" => $this->getTitle($_product),
             "Final URL" => $this->getProductUrl($_product),
             "Image URL" => $this->getImageUrl($_product),
-            "Item description" => $this->getDescription($_product),
-            "Price" => $this->getPrice($_product, true),
-            "Sale price" => $this->getSalePrice($_product, true),
-            "Formatted price" => $this->getFormattedPrice($_product),
-            "Formatted sale price" => $this->getFormattedSalePrice($_product),
+            //"Item description" => $this->getDescription($_product),
+            "Price" => $this->getSalePrice($_product, true)
+            //"Sale price" => $this->getSalePrice($_product, true)
+            //"Formatted price" => $this->getFormattedPrice($_product),
+            //"Formatted sale price" => $this->getFormattedSalePrice($_product),
         );
         return $productDict;
     }
@@ -247,7 +311,7 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
 
             switch ($_product->getTypeId()) {
                 case "downloadable":
-                    if ($_product->getPrice() <= 0) {
+                    if ($_product->getSalePrice() <= 0) {
                         break;
                     }
 //                        Else same processing as simple product
@@ -284,7 +348,7 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         $io->streamWrite($xmlWriter->flush());
     }
 
-    public function getProductCollection()
+    public function getProductCollection($previewLimit=false)
     {
         $collection = Mage::getModel("catalog/product")->getCollection();
 
@@ -303,6 +367,13 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
 
         // Forced EAV tables to join in case Flat table is enabled
         $collection->joinAttribute('image', 'catalog_product/image', 'entity_id', null, 'left');
+
+        // Pick random product with limit by preview (default 3)
+        if ($previewLimit) {
+            $collection->setPageSize($previewLimit);
+            $collection->setCurPage(1);
+            $collection->getSelect()->order(new Zend_Db_Expr('RAND()'));
+        }
 
         // Allow only visible products
         $visibility = array(
@@ -330,7 +401,6 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         Mage::log("Default store ID: " . $storeId, null, "cron.log");
 
         return $collection;
-
     }
 
     /**
@@ -393,7 +463,7 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
     function writeParentProductAttributesXML($_product, $xmlWriter)
     {
         $xmlWriter->writeElement("g:title", $this->getTitle($_product));
-        $xmlWriter->writeElement("g:description", $this->getDescription($_product));
+        //$xmlWriter->writeElement("g:description", $this->getDescription($_product));
         // Product URL
         // $_product->getData("request_path") can return product handle like - aviator-sunglasses.html
         $xmlWriter->writeElement("g:link", $this->getProductUrl($_product));
@@ -408,8 +478,8 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
         // get sale price from the parent product in case that the special price is set on the configurable product
         // but not on the children
         // TODO: possible improvement: check children simple product first
-        $xmlWriter->writeElement("g:price", $this->getPrice($_product));
-        $xmlWriter->writeElement("g:sale_price", $this->getSalePrice($_product));
+        $xmlWriter->writeElement("g:price", $this->getSalePrice($_product, true));
+        //$xmlWriter->writeElement("g:sale_price", $this->getSalePrice($_product, true));
         // get image URL from the parent product in case that the image is set on the configurable product
         // but not on the children simple product
         // TODO: possible improvement: check children simple product first
@@ -612,7 +682,7 @@ class Businessfactory_Roihuntereasy_Model_Cron extends Mage_Core_Model_Abstract
             $description = $product->getDescription();
         }
 
-        $description = str_replace( ' ', ' ', strip_tags( str_replace( '</', ' </',$description ) ) );
+        $description = strip_tags( str_replace( '</', ' </',$description ) );
 
         return $description;
     }
